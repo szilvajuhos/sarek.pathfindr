@@ -1,6 +1,42 @@
 loadMutect2 <- function(mutect2_file) {
   cat("Processing Mutect2 SNV calls\n")
   allpass=NULL
+  tic("Loading SweGen SNP table ... ")
+  snptable=fread('~/reports/reference_data/swegen_snp_counts.small.csv',key='name')
+  toc() 
+  tic("Loading COSMIC coding table ... ")
+  cosmic_coding=fread('~/reports/reference_data/cosmic_coding_table.csv',key = 'name')
+  toc()
+  tic("Loading COSMIC non-coding table ... ")
+  cosmic_noncoding=fread('~/reports/reference_data/cosmic_noncoding_table.csv',key = 'name')
+  toc()
+  tic("Loading COSMIC fusions table ... ")
+  cosmic_fusions=fread('~/reports/reference_data/cosmic_fusions_table.csv',key = 'name')
+  toc()
+  tic("Loading hotspots table ... ")
+  hotspots_snv=unique(
+    fread('~/reports/reference_data/hotspots_v2_snv.csv')[,.(Hugo_Symbol,Amino_Acid_Position)])[-grep('splice',Amino_Acid_Position)]
+  hotspots_snv$pos <- as.numeric(hotspots_snv$Amino_Acid_Position)
+  toc()
+  tic("Loading inframe hotspots table ... ")
+  hotspots_inframe=unique(fread('~/reports/reference_data/hotspots_v2_inframe.csv')[,.(Hugo_Symbol,Amino_Acid_Position)])
+  hotspots_inframe$start=as.numeric(str_replace(string = hotspots_inframe$Amino_Acid_Position,pattern = '-[0-9]*',replacement = ''))
+  hotspots_inframe$end=as.numeric(str_replace(string = hotspots_inframe$Amino_Acid_Position,pattern = '[0-9]*-',replacement = ''))
+  toc()
+  
+  near_hotspots=NULL
+  for (i in 1:nrow(hotspots_inframe)) 
+    near_hotspots=c(near_hotspots,
+                    paste(hotspots_inframe$Hugo_Symbol[i],
+                          c(seq(hotspots_inframe$start[i]-2,hotspots_inframe$start[i]+2),
+                            hotspots_inframe$end[i]-2,hotspots_inframe$end[i]+2)))
+  for (i in 1:nrow(hotspots_snv))
+    near_hotspots=c(near_hotspots,
+                    paste(hotspots_snv$Hugo_Symbol[i],
+                          seq(hotspots_snv$pos[i]-2,hotspots_snv$pos[i]+2)))
+  
+  alltsg=tumorgenes[grep('TSG',`Role in Cancer`),`Gene Symbol`]
+  
   if (exists('mutect2_file')) if (length(mutect2_file)>0) {
     for (s in 1:length(mutect2_file)) {
       vcf=readVcf(file = mutect2_file[s],genome = reference_genome)
@@ -323,7 +359,7 @@ loadMutect2 <- function(mutect2_file) {
     # 
     
     mutect2_selected <- selection
-    fwrite(mutect2_selected[rank_score>3],file=paste0(csv_dir,'/',sampleName,'_mutect2_tumor.csv'))
+    fwrite(mutect2_selected[rank_score>3],file=paste0(csv_dir,'/',sample,'_mutect2_tumor.csv'))
     
 #    if (write_tables) 
 #      fwrite(mutect2_selected[rank_score>3],file=paste0(csv_dir,'/',sampleData$name,'_mutect2_tumor.csv'))
