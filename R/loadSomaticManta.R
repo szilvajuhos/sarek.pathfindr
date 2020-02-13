@@ -3,9 +3,7 @@ loadSomaticManta <-function(manta_files){
   # first collect PASS ids from all samples
   allpass=NULL
   manta_tumor_file = manta_files["manta_tumor_file"]
-  # read SweGen files
-  swegen_manta_all=data.table::fread(manta_files["swegen_manta_all"],key='name')
-  #browser()
+  swegen_manta_all = manta_files["swegen_manta_all"]
   if (length(manta_tumor_file)>0) if (!is.na(manta_tumor_file)) for (s in 1:length(manta_tumor_file)) {
     vcf=VariantAnnotation::readVcf(file = manta_tumor_file[s],genome = reference_genome)
     # TODO DelayedArray::rowRanges ??

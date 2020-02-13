@@ -18,9 +18,13 @@ mantaFiles <- function() {
   # Manta structural variant files
   manta_tumor_file <- grep(pattern = ".*Eff/Manta_.*vs.*somaticSV.vcf.snpEff.ann.vcf$",result_files,value = T)
   manta_normal_file <- grep(pattern = ".*Eff/Manta_.*vs.*diploidSV.vcf.snpEff.ann.vcf$",result_files,value = T)[1]
+  tic("Read SweGen SV counts")
+  swegen_manta_all=data.table::fread('~/reports/reference_data/swegen_sv_counts.csv',key='name')
+  toc()
+  
   # return with a file hash
   c("manta_tumor_file" = manta_tumor_file,
     "manta_normal_file" = manta_normal_file,
-    "swegen_manta_all" = '~/reports/reference_data/swegen_sv_counts.csv'
+    "swegen_manta_all" = swegen_manta_all
     )
 }
