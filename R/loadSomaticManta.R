@@ -3,27 +3,31 @@ loadSomaticManta <-function(manta_files){
   # first collect PASS ids from all samples
   allpass=NULL
   manta_tumor_file = manta_files["manta_tumor_file"]
-  swegen_manta_all = manta_files["swegen_manta_all"]
-  if (length(manta_tumor_file)>0) if (!is.na(manta_tumor_file)) for (s in 1:length(manta_tumor_file)) {
-    vcf=VariantAnnotation::readVcf(file = manta_tumor_file[s],genome = reference_genome)
-    # TODO DelayedArray::rowRanges ??
-    pass=DelayedArray::rowRanges(vcf)$FILTER=='PASS'
-    allpass=c(allpass,names(vcf)[pass])
+  swegen_manta_all = manta_files["swegen_manta_all"]$swegen_manta_all # because it is a list
+  cat("Reading somatic manta file\n")
+  tic("Reading somatic manta file")
+  if (length(manta_tumor_file)>0) if (!is.na(manta_tumor_file)) {
+    for (s in 1:length(manta_tumor_file)) {
+      vcf=VariantAnnotation::readVcf(file = as.character(manta_tumor_file[s]),genome = reference_genome)
+      pass=DelayedArray::rowRanges(vcf)$FILTER=='PASS'
+      allpass=c(allpass,names(vcf)[pass])
+    }
   }
-  # then collect variants...
+  toc()
+  cat("then collect variants...\n")
+  tic("then collect variants...")
   if (length(manta_tumor_file)>0) if (!is.na(manta_tumor_file)) for (s in 1:length(manta_tumor_file)) {
-    sample=strsplit(basename(manta_tumor_file[s]),'[.]')[[1]][1]
-    cat(manta_tumor_file[s],'\n')
+    sample=strsplit(basename(as.character(manta_tumor_file[s])),'[.]')[[1]][1]
+    cat(as.character(manta_tumor_file[s]),'\n')
     
-    vcf=readVcf(file = manta_tumor_file[s],genome = reference_genome)
+    vcf=readVcf(file = as.character(manta_tumor_file[s]),genome = reference_genome)
     vcf=vcf[names(vcf) %in% allpass]
     
-    
     if (length(vcf)>0) {
-      
+      cat(" ... if there are PASS-ed ones ...\n")
       g=geno(vcf)
       inf=info(vcf)
-      rr=rowRanges(vcf)
+      rr=DelayedArray::rowRanges(vcf)
       
       # Read counts
       srtable=as.data.table(g$SR)
@@ -83,7 +87,7 @@ loadSomaticManta <-function(manta_files){
       sv_table <- sv_table[Swegen_count<2]
       
     }
-    
+    toc()
     if (exists('sv_table')) if (nrow(sv_table)>0) {
       # loop through all and extract endpoint chr and pos   <------ This one must be remade..
       for (i in 1:nrow(sv_table)) try( {                    # <----  sometimes error here, so try..
