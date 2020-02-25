@@ -1,0 +1,13 @@
+scoreHaplotypeCaller <- function() {
+  hc_file <- haplotypeCallerFiles()
+  cat("HaplotypeCaller NORMAL file: ",hc_file["hc_normal"],"\n")
+  cat("HaplotypeCaller TUMOR file: ", hc_file["hc_tumor"],"\n")
+  
+  tic("Ranking NORMAL calls")
+  loadNormalHaplotypeCaller(hc_file["hc_normal"])
+  toc()
+  
+  tic("Processing TUMOR calls")
+  loadTumorHaplotypeCaller(hc_file["hc_tumor"])
+  toc()
+}

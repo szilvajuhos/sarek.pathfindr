@@ -92,18 +92,6 @@ scoreStrelka <- function() {
   }, silent = T)
   toc()
   
-  cat("Add Swegen counts\n")
-  tic("Loading SweGen SNP table ... ")
-  snptable = fread('~/reports/reference_data/swegen_snp_counts.small.csv',
-                   key = 'name')
-  toc()
-  tic("Loading COSMIC coding table ... ")
-  cosmic_coding = fread('~/reports/reference_data/cosmic_coding_table.csv', key = 'name')
-  toc()
-  tic("Loading COSMIC non-coding table ... ")
-  cosmic_noncoding = fread('~/reports/reference_data/cosmic_noncoding_table.csv',
-                           key = 'name')
-  toc()
   by_pos = snptable[strelka_table$ID, value] # if the variant is as 10:10001801_C/T in database
   by_name1 = snptable[str_extract(strelka_table$Existing_variation, "^rs[0-9]+"), value] # if first rsid
   by_name2 = snptable[str_extract(strelka_table$Existing_variation, "rs[0-9]+$"), value] # if last rsid (often both)

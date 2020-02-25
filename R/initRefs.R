@@ -97,3 +97,18 @@ for (i in 1:nrow(hotspots_snv))
                   paste(hotspots_snv$Hugo_Symbol[i],
                         seq(hotspots_snv$pos[i]-2,hotspots_snv$pos[i]+2)))
 toc()
+
+tic("Loading SweGen SNP table ... ")
+# TODO: serialize somehow, for a large table it takes aaages
+snptable = fread('~/reports/reference_data/swegen_snp_counts.small.csv',
+                 key = 'name')
+toc()
+
+tic("Loading COSMIC coding table ... ")
+cosmic_coding = fread('~/reports/reference_data/cosmic_coding_table.csv', key = 'name')
+toc()
+
+tic("Loading COSMIC non-coding table ... ")
+cosmic_noncoding = fread('~/reports/reference_data/cosmic_noncoding_table.csv',
+                         key = 'name')
+toc()
