@@ -270,7 +270,7 @@ loadNormalHaplotypeCaller <- function(haplotypecaller_N_file) {
       selection$rank_terms[ix]=paste(selection$rank_terms[ix],'TERT_upstr')
     }
     toc()
-    
+    cat("Finding TF binding variants also takes a while ...\n")
     tic("Add TF binding variants near (100kb) cancer genes")
     ix=grep('TF',selection$Consequence)
     if (length(ix)>0) {
