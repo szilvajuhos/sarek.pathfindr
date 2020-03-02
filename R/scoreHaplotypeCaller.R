@@ -1,5 +1,5 @@
-scoreHaplotypeCaller <- function() {
-  hc_file <- haplotypeCallerFiles()
+scoreHaplotypeCaller <- function(PFconfig) {
+  hc_file <- haplotypeCallerFiles(PFconfig)
   cat("HaplotypeCaller NORMAL file: ",hc_file["hc_normal"],"\n")
   cat("HaplotypeCaller TUMOR file: ", hc_file["hc_tumor"],"\n")
   

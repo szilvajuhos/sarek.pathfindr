@@ -3,29 +3,34 @@
 # 
 # firts, ASCAT and Control-FREEC: we want to use Control-FREEC LOH data later
 # 
+
 library(sarek.pathfindr)
 library(tictoc) # to measure times
+library(config)
+
+PFconfig <- config::get(file = "pathfindr.config.yaml")
+reference_genome <- PFconfig$reference
 
 tic("Scoring ASCAT")
-score_ascat()
+score_ascat(PFconfig)
 toc()
 
 tic("Control-FREEC scores and LOH")
-score_freec()
+score_freec(PFconfig)
 toc()
 
 tic("Mutect2 scores")
-scoreMutect2()
+scoreMutect2(PFconfig$mutect2file)
 toc()
 
 tic("Strelka SNVs and indels")
-scoreStrelka()
+scoreStrelka(PFconfig)
 toc()
-
+ 
 tic("Germline GATK HaplotypeCaller calls")
-scoreHaplotypeCaller()
+scoreHaplotypeCaller(PFconfig)
 toc()
 
 tic("Structural variants by Manta")
-scoreManta()
+scoreManta(PFconfig)
 toc()

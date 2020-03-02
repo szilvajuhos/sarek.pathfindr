@@ -1,8 +1,8 @@
-scoreStrelka <- function() {
+scoreStrelka <- function(PFconfig) {
   cat(" ------------ Score Strelka function -------------\n")
   cat("Reference is: ", reference_genome, '\n')
   
-  strelka_result_files <- strelkaFiles()
+  strelka_result_files <- strelkaFiles(PFconfig)
   cat('Selected files for Strelka in', getwd(), ':\n\n')
   cat("Strelka Somatic SNVs file:  ", strelka_result_files["strelka_snv_file"], '\n')
   cat("Strelka Somatic indels file:  ", strelka_result_files["strelka_indel_file"], '\n')
@@ -279,6 +279,7 @@ scoreStrelka <- function() {
   strelka_selected <-
     selection[order(cumstart, Allele)][order(rank_score, decreasing = T)]
   strelka_csv_file_name <- paste0(csv_dir, '/', sample, '_tumor.csv')
+  cat("Working dir is ",getwd(),"\n")
   cat("Writing results to ", strelka_csv_file_name, "\n")
   fwrite(strelka_selected[rank_score > 3], file = strelka_csv_file_name)
   cat("Ready.\n")

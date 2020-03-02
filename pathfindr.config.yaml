@@ -1,0 +1,11 @@
+default:
+  reference:  "GRCh38"
+  ascat_directory: "/home/szilva/dev/sarek.pathfindr/testdata/Ascat"
+  freec_directory: "/home/szilva/dev/sarek.pathfindr/testdata/ControlFreec/Results_hg38_w20000"
+  manta_directory: "/home/szilva/dev/sarek.pathfindr/testdata/Annotation/snpEff"
+  strelka_directory: "/home/szilva/dev/sarek.pathfindr/testdata/Annotation/VEP"
+  haplotyper_directory: "/home/szilva/dev/sarek.pathfindr/testdata/Annotation/VEP"
+  mutect2file: "/home/szilva/dev/sarek.pathfindr/testdata/Annotation/VEP/mutect2_P2233_101T_vs_P2233_120N.AF.snpEff.ann.vep.ann.vcf"
+  
+  
+

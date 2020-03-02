@@ -1,17 +1,9 @@
-ascat_files <- function() {
-  ascat_result_files <- dir(recursive = T,full.names = T)
-  file_names_to_remove = unique(c(grep(pattern = '.png', x = ascat_result_files),
-                  grep(pattern = 'Annotation.old',x = ascat_result_files),
-                  grep(pattern = '/work/',x = ascat_result_files),
-                  grep(pattern = 'VEP.CADD/Manta',x = ascat_result_files),
-                  grep(pattern = 'VEP/haplo',x = ascat_result_files),
-                  grep(pattern = 'VEP/mute',x = ascat_result_files),
-                  grep(pattern = 'VEP/Strelk',x = ascat_result_files),
-                  grep(pattern = 'old.ControlFreec',x = ascat_result_files),
-                  grep(pattern = 'old.BTB_ControlFreec',x = ascat_result_files)
-  ))
+ascat_files <- function(PFconfig) {
+  ascat_result_files <- dir(path=PFconfig$ascat_directory, recursive = F,full.names = T)
+  file_names_to_remove = unique(c(grep(pattern = '.png', x = ascat_result_files)))
   
-  if (length(file_names_to_remove)>0) ascat_result_files <- ascat_result_files[-file_names_to_remove]
+  if (length(file_names_to_remove)>0) 
+    ascat_result_files <- ascat_result_files[-file_names_to_remove]
   
   # Ascat files
   ascat_Tratio_file <- ascat_result_files[grep(pattern = "^.*Ascat.*[TR2]\\.LogR$",ascat_result_files)]
@@ -27,11 +19,11 @@ ascat_files <- function() {
      )
 }
 
-score_ascat <- function() {
+score_ascat <- function(PFconfig) {
   cat(" ------------ Score ASCAT function -------------\n")
   cat("Reference is: ",reference_genome,'\n')
-  ascat_result_files <- ascat_files()
-  cat('Selected files for ASCAT in',getwd(),':\n\n')
+  ascat_result_files <- ascat_files(PFconfig)
+  cat('Selected files for ASCAT in',PFconfig$ascat_directory,':\n\n')
   cat("ASCAT Tumor Ratio file:  ", ascat_result_files["ascat_Tratio_file"], '\n')
   cat("ASCAT Normal Ratio file: ", ascat_result_files["ascat_Nratio_file"], '\n')
   cat("ASCAT Tumor BAF file:    ", ascat_result_files["ascat_Tbaf_file"], '\n')

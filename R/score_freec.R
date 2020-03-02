@@ -1,7 +1,7 @@
-score_freec <- function() {
+score_freec <- function(PFconfig) {
   cat(" ------------ Score Control-FREEC function -------------\n")
   cat("Reference is: ",reference_genome,'\n')
-  freec_result_files <- freec_files()
+  freec_result_files <- freec_files(PFconfig)
   
   cat('Selected files for Control-FREEC in',getwd(),':\n\n')
   cat("Control-FREEC Tumor Ratio file:  ", freec_result_files["freec_Tratio_file"], '\n')

@@ -1,5 +1,6 @@
 loadMutect2 <- function(mutect2_file) {
   cat("Processing Mutect2 SNV calls\n")
+  # TODO move these to a higher level and lazy loading if possible
   allpass=NULL
   tic("Loading SweGen SNP table ... ")
   snptable=fread('~/reports/reference_data/swegen_snp_counts.small.csv',key='name')
