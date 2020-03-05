@@ -8,8 +8,8 @@ library(sarek.pathfindr)
 library(tictoc) # to measure times
 library(config)
 
-PFconfig <- config::get(file = "pathfindr.config.yaml")
-reference_genome <- PFconfig$reference
+
+browser()
 
 tic("Scoring ASCAT")
 score_ascat(PFconfig)

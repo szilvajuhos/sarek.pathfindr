@@ -7,5 +7,31 @@ default:
   haplotyper_directory: "/home/szilva/dev/sarek.pathfindr/testdata/Annotation/VEP"
   mutect2file: "/home/szilva/dev/sarek.pathfindr/testdata/Annotation/VEP/mutect2_P2233_101T_vs_P2233_120N.AF.snpEff.ann.vep.ann.vcf"
   
-  
+# these are the default database files: if your files are at a separate location 
+# (i.e. you have a population-specific SNV or SV table, or your own list of 
+# cancer genes), overwrite these values
 
+  tumorgenes: "~/reports/reference_data/cancer_gene_census.csv"
+  local_tumorgenes: "~/reports/reference_data/2018_gene_list_tere_ref.csv"
+
+  hotspots_snv: "~/reports/reference_data/hotspots_v2_snv.csv"
+  snptable: "~/reports/reference_data/swegen_snp_counts.small.csv"
+  coding_table: "~/reports/reference_data/cosmic_coding_table.csv"
+  noncoding_table: "~/reports/reference_data/cosmic_noncoding_table.csv"
+
+
+
+#
+# list of genes and regions related to cancer:
+#  tumorgenes: !expr data.table::fread('~/reports/reference_data/cancer_gene_census.csv',key='Gene Symbol') 
+#  local_tumorgenes: !expr data.table::fread('~/reports/reference_data/2018_gene_list_tere_ref.csv',key='Gene') 
+  
+#  hotspots_snv: !expr unique(data.table::fread('~/reports/reference_data/hotspots_v2_snv.csv')[,.(Hugo_Symbol,Amino_Acid_Position)])[-grep('splice',Amino_Acid_Position)] 
+#  hotspots_inframe: !expr unique(data.table::fread('~/reports/reference_data/hotspots_v2_inframe.csv')[,.(Hugo_Symbol,Amino_Acid_Position)]) 
+
+#  cosmic_coding: !expr data.table::fread('~/reports/reference_data/cosmic_coding_table.csv', key = 'name') 
+#  cosmic_noncoding: !expr data.table::fread('~/reports/reference_data/cosmic_noncoding_table.csv', key = 'name') 
+#  cosmic_fusions: !expr data.table::fread('~/reports/reference_data/cosmic_fusions_table.csv',key = 'name') 
+  
+#  snptable: !expr data.table::fread('~/reports/reference_data/swegen_snp_counts.small.csv', key = 'name') 
+#  swegen_manta_all: !expr list(data.table::fread('~/reports/reference_data/swegen_sv_counts.csv',key='name')) 
