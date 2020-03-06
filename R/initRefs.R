@@ -33,10 +33,13 @@ reference_genome <- PFconfig$reference
 # we are not reading all the files at the beginning, only when they are needed
 pfenv = new.env() 
 assign(x = "hotspots_snv", value = NULL, envir = pfenv)
+assign(x = "hotspots_inframe", value = NULL, envir = pfenv)
+assign(x = "near_hotspots", value = NULL, envir = pfenv)
 assign(x = "snptable", value = NULL, envir = pfenv)
 assign(x = "coding_table", value = NULL, envir = pfenv)
 assign(x = "noncoding_table", value = NULL, envir = pfenv)
 assign(x = "tumorgenes", value = NULL, envir = pfenv)
+assign(x = "alltumorgenes", value = NULL, envir = pfenv)
 assign(x = "alltsg", value = NULL, envir = pfenv)
 assign(x = "allfusion", NULL, envir = pfenv)
 assign(x = "allfusionpairs", NULL, envir = pfenv)

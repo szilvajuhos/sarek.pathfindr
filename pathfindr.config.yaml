@@ -18,6 +18,7 @@ default:
   snptable: "~/reports/reference_data/swegen_snp_counts.small.csv"
   coding_table: "~/reports/reference_data/cosmic_coding_table.csv"
   noncoding_table: "~/reports/reference_data/cosmic_noncoding_table.csv"
+  hotspots_inframe: "~/reports/reference_data/hotspots_v2_inframe.csv"
 
 
 

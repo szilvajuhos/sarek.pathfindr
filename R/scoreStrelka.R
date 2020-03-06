@@ -10,12 +10,24 @@ scoreStrelka <- function(PFconfig) {
   
   # get data tables from package environment, or read them from files if they are not read yet
   hotspots_snv <- getSNVhotspots(PFconfig$hotspots_snv)
+  # defining inframe also defines near_hotspots
+  hotspots_inframe <- getInframeHotspots(PFconfig$hotspots_inframe,hotspots_snv)
+  near_hotspots <- get("near_hotspots",pfenv)
+  
   snptable <- getSNPtable(PFconfig$snptable)
   cosmic_coding <- getCountTable(PFconfig$coding_table,"coding_table")
   cosmic_noncoding <- getCountTable(PFconfig$noncoding_table,"noncoding_table")
+
   # this function creates more tables, get them via get(tablename,pfenv)
   getTumourGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
   tumorgenes <- get("tumorgenes",pfenv)
+  alltumorgenes <- get("alltumorgenes",pfenv)
+  # get TSGs
+  alltsg <- get("alltsg",pfenv)
+  # get tier data
+  alltier1 <- get("alltier1",pfenv)
+  alltier2 <- get("alltier2",pfenv)
+
   tic("Strelka indels")
   indels <- scoreStrelkaIndels(strelka_result_files["strelka_indel_file"], sample)
   toc()
@@ -136,12 +148,8 @@ scoreStrelka <- function(PFconfig) {
     strelka_table$cumstart[ix] = strelka_table$start[ix] + chrsz$starts[i]
     strelka_table$cumend[ix] = strelka_table$end[ix] + chrsz$starts[i]
   }
-  
   selection = strelka_table[, -c('CSQ')] # not needed after parsing/merging the annotations
 
-  # get tier data
-  alltier1 <- get("alltier1",pfenv)
-  alltier2 <- get("alltier2",pfenv)
   # if there are any in the selection
   if (nrow(selection) > 0) {
     tic("Selecting tiers")
