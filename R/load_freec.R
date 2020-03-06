@@ -2,6 +2,12 @@ load_freec <-function(result_files) {
   cnvs=NULL
   freec_cnv=NULL
   samplename=NULL
+  # Get reference databases on the fly
+  getTumourGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
+  tumorgenes <- get("tumorgenes",pfenv)
+  alltier1 <- get("alltier1",pfenv)
+  alltier2 <- get("alltier2",pfenv)
+  
   if (!is.na(result_files["freec_Tratio_file"][1])) {
     # extract sample names
     for (s in 1:length(result_files["freec_Tratio_file"])) 
