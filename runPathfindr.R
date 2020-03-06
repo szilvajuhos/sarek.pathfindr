@@ -17,7 +17,7 @@ score_freec(PFconfig)
 toc()
 
 tic("Mutect2 scores")
-scoreMutect2(PFconfig$mutect2file)
+scoreMutect2(PFconfig)
 toc()
 
 tic("Strelka SNVs and indels")

@@ -2,42 +2,26 @@ loadMutect2 <- function(mutect2_file) {
   cat("Processing Mutect2 SNV calls\n")
   # TODO move these to a higher level and lazy loading if possible
   allpass=NULL
-  tic("Loading SweGen SNP table ... ")
-  snptable=fread('~/reports/reference_data/swegen_snp_counts.small.csv',key='name')
-  toc() 
-  tic("Loading COSMIC coding table ... ")
-  cosmic_coding=fread('~/reports/reference_data/cosmic_coding_table.csv',key = 'name')
-  toc()
-  tic("Loading COSMIC non-coding table ... ")
-  cosmic_noncoding=fread('~/reports/reference_data/cosmic_noncoding_table.csv',key = 'name')
-  toc()
-  tic("Loading COSMIC fusions table ... ")
-  cosmic_fusions=fread('~/reports/reference_data/cosmic_fusions_table.csv',key = 'name')
-  toc()
-  tic("Loading hotspots table ... ")
-  hotspots_snv=unique(
-    fread('~/reports/reference_data/hotspots_v2_snv.csv')[,.(Hugo_Symbol,Amino_Acid_Position)])[-grep('splice',Amino_Acid_Position)]
-  hotspots_snv$pos <- as.numeric(hotspots_snv$Amino_Acid_Position)
-  toc()
-  tic("Loading inframe hotspots table ... ")
-  hotspots_inframe=unique(fread('~/reports/reference_data/hotspots_v2_inframe.csv')[,.(Hugo_Symbol,Amino_Acid_Position)])
-  hotspots_inframe$start=as.numeric(str_replace(string = hotspots_inframe$Amino_Acid_Position,pattern = '-[0-9]*',replacement = ''))
-  hotspots_inframe$end=as.numeric(str_replace(string = hotspots_inframe$Amino_Acid_Position,pattern = '[0-9]*-',replacement = ''))
-  toc()
+  snptable <- getSNPtable(PFconfig$snptable)
+  cosmic_coding <- getCountTable(PFconfig$coding_table,"coding_table")
+  cosmic_noncoding <- getCountTable(PFconfig$noncoding_table,"noncoding_table")
+  cosmic_fusions <- getCountTable(PFconfig$fusions_table,"fusions_table")
+  hotspots_snv <- getSNVhotspots(PFconfig$hotspots_snv)
   
-  near_hotspots=NULL
-  for (i in 1:nrow(hotspots_inframe)) 
-    near_hotspots=c(near_hotspots,
-                    paste(hotspots_inframe$Hugo_Symbol[i],
-                          c(seq(hotspots_inframe$start[i]-2,hotspots_inframe$start[i]+2),
-                            hotspots_inframe$end[i]-2,hotspots_inframe$end[i]+2)))
-  for (i in 1:nrow(hotspots_snv))
-    near_hotspots=c(near_hotspots,
-                    paste(hotspots_snv$Hugo_Symbol[i],
-                          seq(hotspots_snv$pos[i]-2,hotspots_snv$pos[i]+2)))
-  
-  alltsg=tumorgenes[grep('TSG',`Role in Cancer`),`Gene Symbol`]
-  
+  # these two below have to be together always (TODO: find a safer way to get near_hotspots)
+  hotspots_inframe <- getInframeHotspots(PFconfig$hotspots_inframe,hotspots_snv)
+  near_hotspots <- get("near_hotspots",pfenv)
+
+  # this function creates more tables, get them via get(tablename,pfenv)
+  getTumorGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
+  tumorgenes <- get("tumorgenes",pfenv)
+  alltumorgenes <- get("alltumorgenes",pfenv)
+  # get TSGs
+  alltsg <- get("alltsg",pfenv)
+  # get tier data
+  alltier1 <- get("alltier1",pfenv)
+  alltier2 <- get("alltier2",pfenv)
+
   if (exists('mutect2_file')) if (length(mutect2_file)>0) {
     for (s in 1:length(mutect2_file)) {
       vcf=readVcf(file = mutect2_file[s],genome = reference_genome)
@@ -51,24 +35,6 @@ loadMutect2 <- function(mutect2_file) {
       
       vcf=readVcf(file = mutect2_file[s],genome = reference_genome)
       vcf=vcf[names(vcf) %in% allpass]
-      
-      #     # pre-filtering by SWAF / Swegen_count to avoid extreme nummber of variants
-      #     if (project=='BTB') {
-      #       swaf=as.data.table(info(vcf)$SWAF)
-      #       remove_swaf=unique(swaf$group[which(swaf$value>=0.01)])
-      #       in_ref=snptable[names(vcf)]
-      #       remove_swegen=which(in_ref$value>=10)
-      #       vcf=vcf[-union(remove_swaf,remove_swegen)]
-      #       topmed=as.data.table(info(vcf)$TOPMED)
-      #       vcf=vcf[-which(topmed$value>=0.01)]
-      #     } else {
-      #       in_ref=snptable[names(vcf)]
-      #       remove_swegen=which(in_ref$value>=10)
-      #       vcf=vcf[-remove_swegen]
-      #     }
-      
-      #m2vcf <- vcf # for later export
-      
       if (length(vcf)>0) {
         rr=DelayedArray::rowRanges(vcf)
         g=geno(vcf)
@@ -160,7 +126,6 @@ loadMutect2 <- function(mutect2_file) {
         max_=apply(counts,1,max,na.rm=T)
         mutations$Cosmic_count=max_
         
-        
         mutations$rank_score=0
         mutations$rank_terms=''
         mutations$LOH=''
@@ -189,7 +154,6 @@ loadMutect2 <- function(mutect2_file) {
         vep_header=strsplit(info(header(vcf))['CSQ',][,3],'Format: ')[[1]][2]
         vep_header=strsplit(vep_header,'\\|')[[1]]
         
-        
         cat("VEP into annotation table\n")
         # VEP annotation is put in annotation_table
         annotation_table=matrix(data = NA,nrow = length(unlist(mutations$CSQ)),ncol = length(vep_header)+1)
@@ -212,17 +176,6 @@ loadMutect2 <- function(mutect2_file) {
     } # done collecting from vcf files
     
     
-    # # filtering by SWAF / Swegen_count (same as with Haplotypecaller)
-    # if (project=='BTB') {
-    #   mutect2_table=mutect2_table[-which(mutect2_table$SWAF>=0.01)]
-    #   mutect2_table=mutect2_table[-which(mutect2_table$Swegen_count>=10)]
-    #   mutect2_table=mutect2_table[-which(mutect2_table$TOPMED>=0.01)]
-    # } else {
-    #   mutect2_table=mutect2_table[-which(mutect2_table$Swegen_count>=10)]
-    # }
-    
-    
-    
     mutect2_table$cumstart=NA
     mutect2_table$cumend=NA
     cat("For each chromosome get cumulative values\n")
@@ -232,9 +185,8 @@ loadMutect2 <- function(mutect2_file) {
       mutect2_table$cumend[ix]=mutect2_table$end[ix]+chrsz$starts[i]
     }
     setkey(mutect2_table,'sample')
-    
     selection=mutect2_table[,-c('CSQ')] # not needed after parsing/merging the annotations
-    
+
     if (nrow(selection)>0) {
       
       # Cosmic/local Tier2 :
@@ -298,7 +250,6 @@ loadMutect2 <- function(mutect2_file) {
         selection$rank_terms[ix]=paste(selection$rank_terms[ix],'near_hotspot')
       }
       
-      
       # Add cosmic counts
       ix=which(selection$Cosmic_count>50)
       if (length(ix)>0) {
@@ -345,7 +296,6 @@ loadMutect2 <- function(mutect2_file) {
         selection$rank_score[ix]=selection$rank_score[ix]+2
         selection$rank_terms[ix]=paste(selection$rank_terms[ix],'cadd_>30')
       }
-      
     }
     
     firstcols=c('ID','sample','SYMBOL','rank_score','rank_terms','LOH','AFreq','Consequence','IMPACT','CADD_PHRED','SWAF','TOPMED','Swegen_count')
@@ -353,18 +303,15 @@ loadMutect2 <- function(mutect2_file) {
     setcolorder(x = selection,neworder = c(firstcols,cols[!cols %in% firstcols]))
     selection <- selection[order(cumstart,Allele)][order(rank_score,decreasing = T)]
     
-    # # Take some information to the VCF
-    # selected_for_vcf=selection[, .(LOH=LOH,Swegen_count=Swegen_count,rank_terms=paste0(rank_score,':',SYMBOL,' ',trimws(rank_terms)),rank_score=rank_score), by = ID]
-    # selected_for_vcf=selected_for_vcf[, .(LOH=LOH,Swegen_count=Swegen_count,rank_terms=paste(unique(rank_terms),collapse=','),rank_score=paste(unique(rank_score),collapse=',')), by=ID]
-    # selected_for_vcf$rank_terms[selected_for_vcf$rank_score=='0']=''
-    # 
-    
     mutect2_selected <- selection
-    fwrite(mutect2_selected[rank_score>3],file=paste0(csv_dir,'/',sample,'_mutect2_tumor.csv'))
+    m2fname <- paste0(csv_dir,'/',sample,'_mutect2_tumor.csv')
+    fwrite(mutect2_selected[rank_score>3],file=m2fname)
+    cat("Ranks written to ",m2fname,"\n")
     
 #    if (write_tables) 
 #      fwrite(mutect2_selected[rank_score>3],file=paste0(csv_dir,'/',sampleData$name,'_mutect2_tumor.csv'))
 #    tableWrapper(mutect2_selected[,-c('cumstart','cumend','DOMAINS')][rank_score>3])
+  } else {
+    cat("No variants considered for scoring")
   }
-  
 }

@@ -28,7 +28,6 @@ cat("Reading configuration and auxiliary datafiles\n")
 tic("To get configuration is ")
 PFconfig <- config::get(file = "pathfindr.config.yaml")
 reference_genome <- PFconfig$reference
-
 # create an environment that can be accessed through the whole package
 # we are not reading all the files at the beginning, only when they are needed
 pfenv = new.env() 
@@ -42,6 +41,7 @@ assign(x = "tumorgenes", value = NULL, envir = pfenv)
 assign(x = "alltumorgenes", value = NULL, envir = pfenv)
 assign(x = "alltsg", value = NULL, envir = pfenv)
 assign(x = "allfusion", NULL, envir = pfenv)
+assign(x = "fusions_table", NULL, envir = pfenv)
 assign(x = "allfusionpairs", NULL, envir = pfenv)
 assign(x = "alltier1", NULL, envir = pfenv)
 assign(x = "alltier2", NULL, envir = pfenv)

@@ -1,4 +1,4 @@
-getTumourGenes <- function(tg_filename, ltg_filename) {
+getTumorGenes <- function(tg_filename, ltg_filename) {
   # get the variable from the package-wide environment
   tumorgenes = get("tumorgenes", envir = pfenv)
   # re-read the file only if it is not defined yet

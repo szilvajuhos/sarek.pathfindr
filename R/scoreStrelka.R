@@ -19,7 +19,7 @@ scoreStrelka <- function(PFconfig) {
   cosmic_noncoding <- getCountTable(PFconfig$noncoding_table,"noncoding_table")
 
   # this function creates more tables, get them via get(tablename,pfenv)
-  getTumourGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
+  getTumorGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
   tumorgenes <- get("tumorgenes",pfenv)
   alltumorgenes <- get("alltumorgenes",pfenv)
   # get TSGs

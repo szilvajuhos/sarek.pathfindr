@@ -19,8 +19,8 @@ default:
   coding_table: "~/reports/reference_data/cosmic_coding_table.csv"
   noncoding_table: "~/reports/reference_data/cosmic_noncoding_table.csv"
   hotspots_inframe: "~/reports/reference_data/hotspots_v2_inframe.csv"
-
-
+  
+  fusions_table: "~/reports/reference_data/cosmic_fusions_table.csv"
 
 #
 # list of genes and regions related to cancer:
