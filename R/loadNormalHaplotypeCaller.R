@@ -77,6 +77,26 @@ loadNormalHaplotypeCaller <- function(haplotypecaller_N_file) {
   # "info"" annotations also need to be added
   mutations = cbind(mutations, as.data.table(info(vcf))[, .(CSQ)])
 
+  snptable <- getSNPtable(PFconfig$snptable)
+  cosmic_coding <- getCountTable(PFconfig$coding_table,"coding_table")
+  cosmic_noncoding <- getCountTable(PFconfig$noncoding_table,"noncoding_table")
+  cosmic_fusions <- getCountTable(PFconfig$fusions_table,"fusions_table")
+  hotspots_snv <- getSNVhotspots(PFconfig$hotspots_snv)
+  
+  # these two below have to be together always (TODO: find a safer way to get near_hotspots)
+  hotspots_inframe <- getInframeHotspots(PFconfig$hotspots_inframe,hotspots_snv)
+  near_hotspots <- get("near_hotspots",pfenv)
+  
+  # this function creates more tables, get them via get(tablename,pfenv)
+  getTumorGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
+  tumorgenes <- get("tumorgenes",pfenv)
+  alltumorgenes <- get("alltumorgenes",pfenv)
+  # get TSGs
+  alltsg <- get("alltsg",pfenv)
+  # get tier data
+  alltier1 <- get("alltier1",pfenv)
+  alltier2 <- get("alltier2",pfenv)
+  
   # Add Swegen counts
   mutations$Swegen_count = snptable[names(vcf), value]
   mutations$Swegen_count[is.na(mutations$Swegen_count)] = 0
