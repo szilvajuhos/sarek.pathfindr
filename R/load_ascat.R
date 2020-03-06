@@ -1,6 +1,11 @@
 load_ascat <- function(result_files) {
   ascat_cnv=NULL
   samplename=NULL
+  # Get reference databases on the fly
+  getTumourGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
+  tumorgenes <- get("tumorgenes",pfenv)
+  alltier1 <- get("alltier1",pfenv)
+  alltier2 <- get("alltier2",pfenv)
   
   if (length(result_files["ascat_Tratio_file"])>0) {
     # extract sample names

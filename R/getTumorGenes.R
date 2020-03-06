@@ -28,13 +28,29 @@ getTumourGenes <- function(tg_filename, ltg_filename) {
     alltumorgenes=unique(c(tumorgenes$`Gene Symbol`,local_tumorgenes$Gene))
     alltsg=tumorgenes[grep('TSG',tumorgenes$`Role in Cancer`),tumorgenes$`Gene Symbol`]
 
+    tic("Creating tiers")
+    # select tier 1 genes from both
+    # then get a list of gene names as the union of the two sets
+    tumorgenes_tier1 = subset.data.frame(tumorgenes,tumorgenes$Tier==1)
+    local_tumorgenes_tier1 = subset.data.frame(local_tumorgenes,local_tumorgenes$`Tier 1 and 2 for pediatric cancers final`==1)
+    # select the first column (gene names)
+    tumorgenes_tier1_genes = tumorgenes_tier1[,1]
+    local_tumorgenes_tier1_genes = local_tumorgenes_tier1[,1]
+    alltier1 = union(tumorgenes_tier1_genes,local_tumorgenes_tier1_genes)
+
+    # DRY but whatever, do the same for tier 2 TODO make it nice without repetition
+    tumorgenes_tier2 = subset.data.frame(tumorgenes,tumorgenes$Tier==2)
+    local_tumorgenes_tier2 = subset.data.frame(local_tumorgenes,local_tumorgenes$`Tier 1 and 2 for pediatric cancers final`==2)
+    alltier2 = union(tumorgenes_tier2[,1],local_tumorgenes_tier2[,1])
+    toc()
+    
+    assign("alltier1", alltier1, envir = pfenv)
+    assign("alltier2", alltier1, envir = pfenv)
     assign("alltumorgenes", alltumorgenes, envir = pfenv)
     assign("alltsg", alltsg, envir = pfenv)
     toc()
     
     # assign("allfusion", allfusion, envir = pfenv)
     # assign("allfusionpairs", allfusionpairs, envir = pfenv)
-    # assign("alltier1", alltier1, envir = pfenv)
-    # assign("alltier2", alltier1, envir = pfenv)
   }
 }

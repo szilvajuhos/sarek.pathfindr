@@ -8,9 +8,6 @@ library(sarek.pathfindr)
 library(tictoc) # to measure times
 library(config)
 
-
-browser()
-
 tic("Scoring ASCAT")
 score_ascat(PFconfig)
 toc()
