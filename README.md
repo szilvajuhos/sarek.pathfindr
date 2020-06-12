@@ -6,9 +6,17 @@ get filtered, ranked somatic and germline variants, optionally in a HTML page, o
 
 To run the code you have to 
   - run Sarek for a normal/tumor sample, get variant calls for ASCAT, Control-FREEC, HaplotypeCaller (calls for both the normal and the tumor sample), Mutect4 (GATK 3.8 for the moment), Strelka and Manta in somatic mode.
-  - clone this repo
-  - install the required R packages
+  - clone this repo, install R5
+  - install the required R packages (eventually I will list them in a file, but have a look at NAMESPACE)
   - edit pathfindr.config.yaml
-  - run runPathfindr.R
+  - run runPathfindr.R `Rscript runPathfindr.R`
+  - after a half an hour have a look at the resulting HTML file
+  
+In RStudio you can have 
+```
+library(devtools)
+install("../sarek.pathfindr")
+
+```
 
 Csirz: szilveszter.juhos at scilifelab.se
