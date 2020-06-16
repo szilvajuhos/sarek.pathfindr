@@ -1,3 +1,3 @@
 loadTumorHaplotypeCaller <- function(haplotypecaller_T_file) {
-  cat("Eljen II Rakoczi Feco!\n")
+  cat("This is placeholder for tumor calls\n")
 }

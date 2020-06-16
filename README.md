@@ -16,6 +16,7 @@ In RStudio you can have
 ```
 library(devtools)
 install("../sarek.pathfindr")
+library(sarek.pathfindr)
 
 ```
 

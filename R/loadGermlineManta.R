@@ -2,6 +2,13 @@ loadGermlineManta <- function(manta_files) {
   manta_normal_file = manta_files["manta_normal_file"]
   swegen_manta_all = manta_files["swegen_manta_all"]$swegen_manta_all # because it is a list
   manta_normal_table = NULL
+  
+  alltier1 <- get("alltier1",pfenv)
+  alltier2 <- get("alltier2",pfenv)
+  cosmic_fusions <- getCountTable(PFconfig$fusions_table,"fusions_table")
+  allfusionpairs <-get("allfusionpairs",pfenv)
+  allfusion <-get("allfusion",pfenv)
+  
   # first collect PASS ids from all samples
   allpass = NULL
   vcfs = list()
