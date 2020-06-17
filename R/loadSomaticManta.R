@@ -272,9 +272,18 @@ loadSomaticManta <-function(manta_files){
       cols=colnames(selection)
       setcolorder(x = selection,neworder = c(firstcols,cols[!cols %in% firstcols]))
       cat("Write out CSV file\n")
+      #browser()
       manta_tumor_selected <- selection[order(Feature_ID)][order(rank_score,decreasing = T)]
       manta_tumor_file_name <- paste0(csv_dir,'/',sub("Manta_","",sample),'_manta_tumor.csv')
-      fwrite(manta_tumor_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>3],file=manta_tumor_file_name)
+      # sometimes we have CSQ (VEP annotation) sometimes we don't
+      ignoredCols = NULL
+      if(length(grep('CSQ',colnames(manta_tumor_selected),value=TRUE)) > 0) {
+        ignoredCols = c('ANN','CSQ','Gene_ID')
+      } else {
+        cat("No VEP annotations, writing out without CSQ\n")
+        ignoredCols = c('ANN','Gene_ID')
+      }
+      fwrite(manta_tumor_selected[,-ignoredCols][rank_score>3],file=manta_tumor_file_name)
       #if (write_tables) fwrite(manta_tumor_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>3],file=paste0(csv_dir,'/',sampleData$name,'_manta_tumor.csv'))
       #tableWrapper(manta_tumor_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>3])
       cat(paste("Manta tumor ranks written to",manta_tumor_file_name),"\n")
