@@ -46,7 +46,9 @@ assign(x = "allfusionpairs", NULL, envir = pfenv)
 assign(x = "alltier1", NULL, envir = pfenv)
 assign(x = "alltier2", NULL, envir = pfenv)
 
-
+getEnvVariable <- function(varStr) {
+  get(varStr,pfenv)
+}
 
 # tic("Shaping tumor genes dataframe")
 # tumorgenes=data.table::fread('~/reports/reference_data/cancer_gene_census.csv',key='Gene Symbol')

@@ -20,4 +20,9 @@ library(sarek.pathfindr)
 
 ```
 
+To get a HTML output, run `rmarkdown::render("runPF.Rmd")` in the console (or - after installing the proper R5 environment), do 
+```
+Rscript <(echo "rmarkdown::render('runPF.Rmd',knit_root_dir='.',output_file='bugger.html')")
+```
+
 Csirz: szilveszter.juhos at scilifelab.se

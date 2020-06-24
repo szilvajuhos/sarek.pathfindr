@@ -1,0 +1,113 @@
+---
+title: "Pathfindr Report"
+output:
+  html_document:
+      toc: false
+      toc_float: false
+      toc_depth: 4
+      code_folding: NULL
+      df_print: paged
+editor_options:
+  chunk_output_type: console
+---
+<!-- CSS style for left alignment and for tables to look ok: -->
+<style>
+  body {
+    position: absolute;
+    left: 42px;
+  }
+  .main-container {max-width: none !important;}
+  table, td, th {
+    font-size: 11px;
+    border: none;
+    padding-left: 1em;
+    padding-right: 1em;
+    min-width: 100%;
+    word-wrap: break-word;
+    max-width: 240px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+</style>
+
+
+<!-- Markdown setup -->
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = FALSE, comment = '', warning=F, error = F)
+options(width = 600)
+```
+### Load dependencies
+```{r load_dependencies}
+library(config)
+library(tictoc)
+library(sarek.pathfindr)
+
+makelinks <- function(strings,sep='&') {
+  alltumorgenes <- sarek.pathfindr::getEnvVariable("alltumorgenes")
+  if (length(strings)>0) for (i in 1:length(strings)) if (strings[i]!='') {
+    t=strsplit(strings[i],sep)[[1]]
+    for (j in 1:length(t)) {
+      if (t[j] %in% alltumorgenes) {
+        t[j]=kableExtra::cell_spec(t[j], link = paste0("https://cancer.sanger.ac.uk/cosmic/gene/analysis?ln=",t[j]),format = 'html')
+      } else if (startsWith(t[j],'rs')) {
+        t[j]=kableExtra::cell_spec(t[j], link = paste0("https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=",substr(t[j],3,100)),format = 'html')
+      } else if (startsWith(t[j],'COSM')) {
+        t[j]=kableExtra::cell_spec(t[j], link = paste0("https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=",substr(t[j],5,100)),format = 'html')
+      }
+    }
+    strings[i]=paste(t,collapse = ' ')
+  }
+  return(strings)
+}
+
+tableWrapper <- function(table) {
+  if ('Existing_variation' %in% colnames(table)) {
+    table$Existing_variation=makelinks(table$Existing_variation)
+  }
+  if ('Gene_Name' %in% colnames(table)) {
+    table$Gene_Name[nchar(table$Gene_Name)>200]='many'
+  }
+  if ('SYMBOL' %in% colnames(table)) {
+    table$SYMBOL=makelinks(table$SYMBOL)
+  }
+  if ('cancer_genes' %in% colnames(table)) {
+    table$cancer_genes=makelinks(table$cancer_genes,sep=' ')
+  }
+  if ('AD_TUMOR' %in% colnames(table)) {
+    table$AD_TUMOR=unlist(lapply(table$AD_TUMOR,paste,collapse=', '))
+  }
+  if ('AD_NORMAL' %in% colnames(table)) {
+    table$AD_NORMAL=unlist(lapply(table$AD_NORMAL,paste,collapse=', '))
+  }
+  if ('AD' %in% colnames(table)) {
+    if (is.list(table$AD)) table$AD=unlist(lapply(table$AD,paste,collapse=', '))
+  }
+
+  samples=sort(unique(table$sample))
+
+  if (T) if (nrow(table)>0) htmlTable::htmlTable(table,
+            col.rgroup = c("none", "#F7F7F7"),
+            tspanner=paste('Rank score:',unique(table$rank_score)),
+            n.tspanner=rev(table(table$rank_score)))
+  # if (length(samples)>1) htmlTable(table, 
+  #           col.rgroup = c("none", "#F7F7F7"),
+  #           n.rgroup='',
+  #           tspanner=paste('Rank score:',unique(table$rank_score)),
+  #           n.tspanner=table(table$rank_score))
+}
+```
+
+## Copy number {.tabset}
+
+### ControlFreec
+<!-- Read Control Freec copy number data -->
+```{r load_control_freec}
+tic("Control-FREEC scores and LOH")
+freec_cnv = score_freec(PFconfig)
+toc()
+tableWrapper(freec_cnv) # table in report
+
+```
+

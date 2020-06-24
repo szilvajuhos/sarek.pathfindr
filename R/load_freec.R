@@ -158,4 +158,5 @@ load_freec <-function(result_files) {
     cat(paste0("Results written to CSV table ",getwd(),"/",csv_filename))
     #tableWrapper(freec_cnv) # table in report
   }
+  freec_cnv
 }
