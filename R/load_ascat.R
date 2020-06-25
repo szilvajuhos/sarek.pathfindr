@@ -1,6 +1,10 @@
 load_ascat <- function(result_files) {
-  ascat_cnv=NULL
-  samplename=NULL
+  ascat_cnv<-NULL
+  samplename<-NULL
+  ascat_tratio<-NULL; 
+  ascat_tbaf<-NULL; 
+  ascat_nbaf<-NULL
+  ascat_binned<-NULL
   # Get reference databases on the fly
   getTumorGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
   tumorgenes <- get("tumorgenes",pfenv)
@@ -9,11 +13,9 @@ load_ascat <- function(result_files) {
   
   if (length(result_files["ascat_Tratio_file"])>0) {
     # extract sample names
-    for (s in 1:length(result_files["ascat_Tratio_file"])) samplename[s] = strsplit(basename(result_files["ascat_Tratio_file"][s]),'[.]')[[1]][1]
+    for (s in 1:length(result_files["ascat_Tratio_file"])) 
+      samplename[s] = strsplit(basename(result_files["ascat_Tratio_file"][s]),'[.]')[[1]][1]
     
-    ascat_tratio=NULL; 
-    ascat_tbaf=NULL; 
-    ascat_cnv=NULL
     for (s in 1:length(samplename)) {
       # segmented copy number
       cat("Loading segmented copy number\n")
@@ -82,7 +84,6 @@ load_ascat <- function(result_files) {
     
     # smooth data for view
     cat("Smooth data for view\n")
-    ascat_binned=NULL
     for (sample in samplename) for (i in 1:nrow(chrsz)) {
       temp=data.table(
         sample,
@@ -172,5 +173,7 @@ load_ascat <- function(result_files) {
     data.table::fwrite(ascat_cnv,file=csv_filename)
     cat(paste0("Results written to CSV table ",getwd(),"/",csv_filename))
   }
-  ascat_cnv
+  ascat_result <- list(ascat_cnv,ascat_tratio,ascat_tbaf, ascat_nbaf, ascat_binned)
+  names(ascat_result) <- c('ASCAT_CNVs','tratio','tbaf','nbaf','binned')
+  ascat_result
 }
