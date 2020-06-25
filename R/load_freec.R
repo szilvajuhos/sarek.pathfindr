@@ -2,6 +2,9 @@ load_freec <-function(result_files) {
   cnvs=NULL
   freec_cnv=NULL
   samplename=NULL
+  tratio=NULL
+  tbaf=NULL
+  nbaf=NULL
   # Get reference databases on the fly
   getTumorGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
   tumorgenes <- get("tumorgenes",pfenv)
@@ -13,7 +16,6 @@ load_freec <-function(result_files) {
     for (s in 1:length(result_files["freec_Tratio_file"])) 
       samplename[s]=strsplit(basename(result_files["freec_Tratio_file"][s]),'[.]')[[1]][1]
     
-    tratio=NULL; tbaf=NULL
     for (s in 1:length(result_files["freec_Tratio_file"])) {
       # tumor log ratio
       cat("Loading tumor log ratio\n")
@@ -156,7 +158,9 @@ load_freec <-function(result_files) {
     csv_filename=paste0(csv_dir,'/',samplename,'_freec_cnv.csv')
     data.table::fwrite(freec_cnv,file=csv_filename) # write to file
     cat(paste0("Results written to CSV table ",getwd(),"/",csv_filename))
-    #tableWrapper(freec_cnv) # table in report
   }
-  freec_cnv
+  # It would be really nice to have a decent data structure like dict or tuples in R
+  freec_result <- list(freec_cnv,tratio,nratio,tbaf,nbaf)
+  names(freec_result) <- c('FREEC_CNVs','tratio','nratio','tbaf','nbaf')
+  freec_result
 }

@@ -172,4 +172,5 @@ load_ascat <- function(result_files) {
     data.table::fwrite(ascat_cnv,file=csv_filename)
     cat(paste0("Results written to CSV table ",getwd(),"/",csv_filename))
   }
+  ascat_cnv
 }

@@ -101,13 +101,24 @@ tableWrapper <- function(table) {
 
 ## Copy number {.tabset}
 
-### ControlFreec
+#### ControlFreec
 <!-- Read Control Freec copy number data -->
 ```{r load_control_freec}
 tic("Control-FREEC scores and LOH")
-freec_cnv = score_freec(PFconfig)
+freec_results = score_freec(PFconfig)
 toc()
-tableWrapper(freec_cnv) # table in report
+tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn tuples in R one day
+```
+#### Ascat
+<!-- <!-- Read ASCAT copy number data --> -->
+<!-- ```{r load_ascat} -->
+<!-- tic("ASCAT scores and LOH") -->
+<!-- ascat_cnv = score_ascat(PFconfig) -->
+<!-- toc() -->
+<!-- tableWrapper(ascat_cnv) # table in report -->
+<!-- ``` -->
 
+```{r plot_control_freec,fig.width=15,fig.height=7}
+print( controlFREECGenomeView( freec_results ))
 ```
 
