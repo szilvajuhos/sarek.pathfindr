@@ -1,11 +1,13 @@
 load_freec <-function(result_files) {
-  cnvs=NULL
-  freec_cnv=NULL
-  samplename=NULL
-  tratio=NULL
-  tbaf=NULL
-  nbaf=NULL
-  # Get reference databases on the fly
+  cnvs<-NULL
+  freec_cnv<-NULL
+  samplename<-NULL
+  tratio<-NULL
+  tbaf<-NULL
+  nbaf<-NULL
+  binned <- NULL
+  
+    # Get reference databases on the fly
   getTumorGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
   tumorgenes <- get("tumorgenes",pfenv)
   alltier1 <- get("alltier1",pfenv)
@@ -70,7 +72,6 @@ load_freec <-function(result_files) {
     
     # smooth data for plot
     cat("Smooth data for plot\n")
-    binned <- NULL
     cat("Writing chromosomes: ")
     for (sample in samplename) for (i in 1:nrow(chrsz)) {
       cat(chrsz$chr[i]," ")
@@ -160,7 +161,7 @@ load_freec <-function(result_files) {
     cat(paste0("Results written to CSV table ",getwd(),"/",csv_filename))
   }
   # It would be really nice to have a decent data structure like dict or tuples in R
-  freec_result <- list(freec_cnv,tratio,nratio,tbaf,nbaf)
-  names(freec_result) <- c('FREEC_CNVs','tratio','nratio','tbaf','nbaf')
+  freec_result <- list(freec_cnv,tratio,nratio,tbaf,nbaf,binned)
+  names(freec_result) <- c('FREEC_CNVs','tratio','nratio','tbaf','nbaf','binned')
   freec_result
 }

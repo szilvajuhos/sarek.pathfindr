@@ -121,4 +121,11 @@ tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn 
 ```{r plot_control_freec,fig.width=15,fig.height=7}
 print( controlFREECGenomeView( freec_results ))
 ```
+&nbsp;
+
+#### Control-FREEC Scatter plot
+<!-- Scatter plot -->
+```{r scatter_plot_control_freec, echo=FALSE,fig.width=15,fig.height=8,warning=F}
+  print( controlFREECScatterView( freec_results['binned'][[1]] ) )
+```
 
