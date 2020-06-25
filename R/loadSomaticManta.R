@@ -2,12 +2,13 @@ loadSomaticManta <-function(manta_files){
   alltier1 <- get("alltier1",pfenv)
   alltier2 <- get("alltier2",pfenv)
   cosmic_fusions <- getCountTable(PFconfig$fusions_table,"fusions_table")
-  allfusionpairs <-get("allfusionpairs",pfenv)
-  allfusion <-get("allfusion",pfenv)
-  
-  manta_tumor_table=NULL
+  allfusionpairs <- get("allfusionpairs",pfenv)
+  allfusion <- get("allfusion",pfenv)
+  selected_manta <- NULL
+  manta_tumor_table <- NULL
   # first collect PASS ids from all samples
   allpass=NULL
+  
   manta_tumor_file = manta_files["manta_tumor_file"]
   swegen_manta_all = manta_files["swegen_manta_all"]$swegen_manta_all # because it is a list
   cat("Reading somatic manta file\n")
@@ -276,18 +277,15 @@ loadSomaticManta <-function(manta_files){
       manta_tumor_selected <- selection[order(Feature_ID)][order(rank_score,decreasing = T)]
       manta_tumor_file_name <- paste0(csv_dir,'/',sub("Manta_","",sample),'_manta_tumor.csv')
       # sometimes we have CSQ (VEP annotation) sometimes we don't
-      ignoredCols = NULL
       if(length(grep('CSQ',colnames(manta_tumor_selected),value=TRUE)) > 0) {
-        ignoredCols = c('ANN','CSQ','Gene_ID')
+        selected_manta <- manta_tumor_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>3]
       } else {
         cat("No VEP annotations, writing out without CSQ\n")
-        ignoredCols = c('ANN','Gene_ID')
+        selected_manta <- manta_tumor_selected[,-c('ANN','Gene_ID')][rank_score>3]
       }
-      fwrite(manta_tumor_selected[,-ignoredCols][rank_score>3],file=manta_tumor_file_name)
-      #if (write_tables) fwrite(manta_tumor_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>3],file=paste0(csv_dir,'/',sampleData$name,'_manta_tumor.csv'))
-      #tableWrapper(manta_tumor_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>3])
+      fwrite(selected_manta,file=manta_tumor_file_name)
       cat(paste("Manta tumor ranks written to",manta_tumor_file_name),"\n")
     } 
   }
-  
+  selected_manta  
 }

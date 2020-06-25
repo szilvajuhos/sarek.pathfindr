@@ -38,6 +38,8 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE, comment = '', warning=F, error = F)
 options(width = 600)
 ```
+# {.tabset .tabset-pills}
+## Setup {.tabset}
 ### Load dependencies
 ```{r load_dependencies}
 library(config)
@@ -109,14 +111,6 @@ freec_results = score_freec(PFconfig)
 toc()
 tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn tuples in R one day
 ```
-#### Ascat
-<!-- Read ASCAT copy number data -->
-```{r load_ascat}
-tic("ASCAT scores and LOH")
-ascat_results = score_ascat(PFconfig)
-toc()
-tableWrapper(ascat_results['ASCAT_CNVs'][[1]]) # table in report
-```
 #### Control-FREEC Genome plot
 ```{r plot_control_freec,fig.width=15,fig.height=7}
 print( controlFREECGenomeView( freec_results ))
@@ -127,14 +121,30 @@ print( controlFREECGenomeView( freec_results ))
 ```{r scatter_plot_control_freec, echo=FALSE,fig.width=15,fig.height=8,warning=F}
 print( controlFREECScatterView( freec_results['binned'][[1]] ) )
 ```
-### View Ascat {.active}
-#### ASCAT Genome plot
-<!-- Plot ASCAT tumor copy number log ratio, tBAF and nBAF -->
-```{r plot_ascat,fig.width=15,fig.height=7}
-print( ascatGenomeView(ascat_results) )
-```
-&nbsp;
-#### ASCAT Scatter plot
-```{r scatter_plot_ascat, echo=FALSE,fig.width=15,fig.height=8,warning=F}
-print( ASCATScatterView( ascat_results['binned'][[1]] ) )
+<!-- ### View Ascat {.active} -->
+<!-- #### Ascat -->
+<!-- <!-- Read ASCAT copy number data --> -->
+<!-- ```{r load_ascat} -->
+<!-- tic("ASCAT scores and LOH") -->
+<!-- ascat_results = score_ascat(PFconfig) -->
+<!-- toc() -->
+<!-- tableWrapper(ascat_results['ASCAT_CNVs'][[1]]) # table in report -->
+<!-- ``` -->
+<!-- #### ASCAT Genome plot -->
+<!-- <!-- Plot ASCAT tumor copy number log ratio, tBAF and nBAF --> -->
+<!-- ```{r plot_ascat,fig.width=15,fig.height=7} -->
+<!-- print( ascatGenomeView(ascat_results) ) -->
+<!-- ``` -->
+<!-- &nbsp; -->
+<!-- #### ASCAT Scatter plot -->
+<!-- ```{r scatter_plot_ascat, echo=FALSE,fig.width=15,fig.height=8,warning=F} -->
+<!-- print( ASCATScatterView( ascat_results['binned'][[1]] ) ) -->
+<!-- ``` -->
+
+## Structural variants {.tabset}
+<!-- Read the tumor structural variant data -->
+### Manta (tumor)
+```{r load_manta_tumor, echo=FALSE}
+somatic_manta <- loadSomaticManta(mantaFiles(PFconfig))
+tableWrapper(somatic_manta)
 ```
