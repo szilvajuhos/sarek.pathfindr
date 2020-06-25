@@ -3,7 +3,6 @@ controlFREECGenomeView <- function(freec_results) {
   nratio <- freec_results['nratio'][[1]]
   tbaf <- freec_results['tbaf'][[1]]
   nbaf <- freec_results['nbaf'][[1]]
-  browser()
   g = NULL
   if (exists('tratio')) for (sample in unique(tratio$sample)) {
     cat('Control Freec: ',sample)

@@ -117,11 +117,6 @@ ascat_results = score_ascat(PFconfig)
 toc()
 tableWrapper(ascat_results['ASCAT_CNVs'][[1]]) # table in report
 ```
-#### ASCAT Genome plot
-<!-- Plot ASCAT tumor copy number log ratio, tBAF and nBAF -->
-```{r plot_ascat,fig.width=15,fig.height=7}
-print( ascatGenomeView(ascat_results) )
-```
 #### Control-FREEC Genome plot
 ```{r plot_control_freec,fig.width=15,fig.height=7}
 print( controlFREECGenomeView( freec_results ))
@@ -130,6 +125,16 @@ print( controlFREECGenomeView( freec_results ))
 #### Control-FREEC Scatter plot
 <!-- Scatter plot -->
 ```{r scatter_plot_control_freec, echo=FALSE,fig.width=15,fig.height=8,warning=F}
-  print( controlFREECScatterView( freec_results['binned'][[1]] ) )
+print( controlFREECScatterView( freec_results['binned'][[1]] ) )
 ```
-
+### View Ascat {.active}
+#### ASCAT Genome plot
+<!-- Plot ASCAT tumor copy number log ratio, tBAF and nBAF -->
+```{r plot_ascat,fig.width=15,fig.height=7}
+print( ascatGenomeView(ascat_results) )
+```
+&nbsp;
+#### ASCAT Scatter plot
+```{r scatter_plot_ascat, echo=FALSE,fig.width=15,fig.height=8,warning=F}
+print( ASCATScatterView( ascat_results['binned'][[1]] ) )
+```
