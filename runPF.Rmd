@@ -148,3 +148,9 @@ print( controlFREECScatterView( freec_results['binned'][[1]] ) )
 somatic_manta <- loadSomaticManta(mantaFiles(PFconfig))
 tableWrapper(somatic_manta)
 ```
+### Manta (germline)
+```{r load_manta_normal, echo=TRUE}
+germline_manta <- loadGermlineManta(mantaFiles(PFconfig))
+tableWrapper(germline_manta)
+```
+

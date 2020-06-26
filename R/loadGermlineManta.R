@@ -1,7 +1,7 @@
 loadGermlineManta <- function(manta_files) {
-  manta_normal_file = manta_files["manta_normal_file"]
-  swegen_manta_all = manta_files["swegen_manta_all"]$swegen_manta_all # because it is a list
-  manta_normal_table = NULL
+  manta_normal_file <- manta_files["manta_normal_file"]
+  swegen_manta_all <- manta_files["swegen_manta_all"]$swegen_manta_all # because it is a list
+  manta_normal_table <- NULL
   
   alltier1 <- get("alltier1",pfenv)
   alltier2 <- get("alltier2",pfenv)
@@ -9,9 +9,11 @@ loadGermlineManta <- function(manta_files) {
   allfusionpairs <-get("allfusionpairs",pfenv)
   allfusion <-get("allfusion",pfenv)
   
+  selected_manta <- NULL
+  
   # first collect PASS ids from all samples
-  allpass = NULL
-  vcfs = list()
+  allpass <- NULL
+  vcfs <- list()
   cat("Reading Manta normal file ... \n")
   if (length(manta_normal_file) > 0)
     if (!is.na(manta_normal_file))
@@ -354,8 +356,11 @@ loadGermlineManta <- function(manta_files) {
         cat("No VEP annotations, writing out without CSQ\n")
         ignoredCols = c('ANN','Gene_ID')
       }
-      fwrite(manta_normal_selected[,-ignoredCols][rank_score>3],file = manta_normal_file_name)
+      selected_manta <- manta_tumor_selected[,-ignoredCols][rank_score>3]  # original is rank_score > 3
+      fwrite(selected_manta,file = manta_normal_file_name)
       toc()
     }
   }
+  browser()
+  selected_manta
 }
