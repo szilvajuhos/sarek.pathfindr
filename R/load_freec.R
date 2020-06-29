@@ -162,6 +162,7 @@ load_freec <-function(result_files) {
   }
   # It would be really nice to have a decent data structure like dict or tuples in R
   freec_result <- list(freec_cnv,tratio,nratio,tbaf,nbaf,binned)
+  assign(x = 'cf_tratio', tratio, envir = pfenv)
   names(freec_result) <- c('FREEC_CNVs','tratio','nratio','tbaf','nbaf','binned')
   freec_result
 }

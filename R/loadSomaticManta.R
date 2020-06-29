@@ -287,5 +287,6 @@ loadSomaticManta <-function(manta_files){
       cat(paste("Manta tumor ranks written to",manta_tumor_file_name),"\n")
     } 
   }
+  assign(x = "manta_tumor_selected", manta_tumor_selected, envir = pfenv)
   selected_manta  
 }

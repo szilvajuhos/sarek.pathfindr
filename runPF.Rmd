@@ -145,12 +145,66 @@ print( controlFREECScatterView( freec_results['binned'][[1]] ) )
 <!-- Read the tumor structural variant data -->
 ### Manta (tumor)
 ```{r load_manta_tumor, echo=FALSE}
-somatic_manta <- loadSomaticManta(mantaFiles(PFconfig))
+manta_vcfs <- mantaFiles(PFconfig)
+somatic_manta <- loadSomaticManta(manta_vcfs)
 tableWrapper(somatic_manta)
 ```
-### Manta (germline)
-```{r load_manta_normal, echo=TRUE}
-germline_manta <- loadGermlineManta(mantaFiles(PFconfig))
-tableWrapper(germline_manta)
-```
+<!-- ### Manta (germline) -->
+<!-- ```{r load_manta_normal, echo=TRUE} -->
+<!-- germline_manta <- loadGermlineManta(manta_vcfs) -->
+<!-- tableWrapper(germline_manta) -->
+<!-- ``` -->
+&nbsp;
 
+### View structural variants {.active}
+```{r plot_manta, echo=FALSE,fig.width=15,fig.height=4}
+  # we are not printing these for all samples (i.e. for WES there is little point to do so)
+  # note, Control-FREEC and ASCAT T ratios,
+  # also selected Manta variations are passed
+  # in the global 'pfenv' environment
+  g <- structuralVariationView(manta_vcfs)
+  if(!is.null(g)) {
+    print(g)
+  }
+```
+## Somatic point mutations {.tabset .active}
+### Mutect 2
+### Strelka
+### View Mutect 2
+### View Strelka {.active}
+
+## Germline point mutations {.tabset}
+### HaplotypeCaller (normal only)
+### HaplotypeCaller (all samples)
+### HaplotypeCaller overlap
+
+## All {.tabset}
+### Top ranked {.active}
+&nbsp;
+### Save to files
+
+## Chromosomes {.tabset}
+### 1
+### 2
+### 3
+### 4
+### 5
+### 6
+### 7
+### 8
+### 9
+### 10
+### 11
+### 12
+### 13
+### 14
+### 15
+### 16
+### 17
+### 18
+### 19
+### 20
+### 21
+### 22
+### X
+### Y

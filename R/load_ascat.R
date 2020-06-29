@@ -174,6 +174,7 @@ load_ascat <- function(result_files) {
     cat(paste0("Results written to CSV table ",getwd(),"/",csv_filename))
   }
   ascat_result <- list(ascat_cnv,ascat_tratio,ascat_tbaf, ascat_nbaf, ascat_binned)
+  assign(x = "ascat_tratio", ascat_tratio, envir = pfenv)  # can not avoid ugly globals
   names(ascat_result) <- c('ASCAT_CNVs','tratio','tbaf','nbaf','binned')
   ascat_result
 }
