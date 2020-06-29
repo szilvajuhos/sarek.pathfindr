@@ -7,11 +7,13 @@ scoreManta <- function(PFconfig) {
   cat("manta Somatic Structural Variants file:  ", manta_result_files$manta_tumor_file, '\n')
   cat("manta Normal Structural Variants file: ", manta_result_files$manta_normal_file, '\n')
   
-  tic("************** Calculating Manta germline scores **************")
+  cat("************** Calculating Manta germline scores **************")
+  tic("Manta Germline")
   loadGermlineManta(manta_result_files)
   toc()  
   
-  tic("************** Calculating Manta somatic scores **************")
+  cat("************** Calculating Manta somatic scores **************")
+  tic("Manta Somatic")
   loadSomaticManta(manta_result_files)
   toc()
 }

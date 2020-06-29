@@ -344,23 +344,22 @@ loadGermlineManta <- function(manta_files) {
       )
       cols = colnames(selection)
       setcolorder(x = selection, neworder = c(firstcols, cols[!cols %in% firstcols]))
+
+      #browser()
       
       manta_normal_selected <- selection[order(Feature_ID)][order(rank_score, decreasing = T)]
-      manta_normal_file <- paste0(csv_dir, '/', sample, '_manta_normal.csv')
-      tic(paste("Writing file ",manta_normal_file))
+      manta_normal_CSV_name <- paste0(csv_dir, '/', sample, '_manta_normal.csv')
+      tic(paste("Writing file ",manta_normal_CSV_name))
       # sometimes we have CSQ (VEP annotation) sometimes we don't
-      ignoredCols = NULL
       if(length(grep('CSQ',colnames(manta_normal_selected),value=TRUE)) > 0) {
-        ignoredCols = c('ANN','CSQ','Gene_ID')
+        selected_manta <- manta_normal_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>2]  # original is rank_score > 3
       } else {
         cat("No VEP annotations, writing out without CSQ\n")
-        ignoredCols = c('ANN','Gene_ID')
+        selected_manta <- manta_normal_selected[,-c('ANN','Gene_ID')][rank_score>2]  # original is rank_score > 3
       }
-      selected_manta <- manta_tumor_selected[,-ignoredCols][rank_score>3]  # original is rank_score > 3
-      fwrite(selected_manta,file = manta_normal_file_name)
+      fwrite(selected_manta,file = manta_normal_CSV_name)
       toc()
     }
   }
-  browser()
   selected_manta
 }

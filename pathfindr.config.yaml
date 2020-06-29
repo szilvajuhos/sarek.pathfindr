@@ -21,4 +21,3 @@ default:
   hotspots_inframe: "~/reports/reference_data/hotspots_v2_inframe.csv"
   
   fusions_table: "~/reports/reference_data/cosmic_fusions_table.csv"
-  
