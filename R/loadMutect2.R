@@ -1,7 +1,10 @@
 loadMutect2 <- function(mutect2_file) {
   cat("Processing Mutect2 SNV calls\n")
-  # TODO move these to a higher level and lazy loading if possible
-  allpass=NULL
+  # used to store final results
+  mutect2_selected <- NULL
+  # local variable
+  allpass <- NULL
+  # all the aux data used
   snptable <- getSNPtable(PFconfig$snptable)
   cosmic_coding <- getCountTable(PFconfig$coding_table,"coding_table")
   cosmic_noncoding <- getCountTable(PFconfig$noncoding_table,"noncoding_table")
@@ -303,9 +306,9 @@ loadMutect2 <- function(mutect2_file) {
     setcolorder(x = selection,neworder = c(firstcols,cols[!cols %in% firstcols]))
     selection <- selection[order(cumstart,Allele)][order(rank_score,decreasing = T)]
     
-    mutect2_selected <- selection
+    mutect2_selected <- selection[rank_score>3]
     m2fname <- paste0(csv_dir,'/',sample,'_mutect2_tumor.csv')
-    fwrite(mutect2_selected[rank_score>3],file=m2fname)
+    fwrite(mutect2_selected,file=m2fname)
     cat("Ranks written to ",m2fname,"\n")
     
 #    if (write_tables) 
@@ -314,4 +317,5 @@ loadMutect2 <- function(mutect2_file) {
   } else {
     cat("No variants considered for scoring")
   }
+  mutect2_selected
 }

@@ -142,6 +142,7 @@ print( controlFREECScatterView( freec_results['binned'][[1]] ) )
 <!-- ``` -->
 
 ## Structural variants {.tabset}
+
 <!-- Read the tumor structural variant data -->
 ### Manta (tumor)
 ```{r load_manta_tumor, echo=FALSE}
@@ -149,11 +150,14 @@ manta_vcfs <- mantaFiles(PFconfig)
 somatic_manta <- loadSomaticManta(manta_vcfs)
 tableWrapper(somatic_manta)
 ```
-<!-- ### Manta (germline) -->
-<!-- ```{r load_manta_normal, echo=TRUE} -->
-<!-- germline_manta <- loadGermlineManta(manta_vcfs) -->
-<!-- tableWrapper(germline_manta) -->
-<!-- ``` -->
+### Manta (germline)
+```{r load_manta_normal, echo=TRUE}
+# It takes a while, so skip for testing
+print("Manta Germline Results should be here")
+# germline_manta <- loadGermlineManta(manta_vcfs)
+# tableWrapper(germline_manta)
+```
+
 &nbsp;
 
 ### View structural variants {.active}
@@ -167,11 +171,29 @@ tableWrapper(somatic_manta)
     print(g)
   }
 ```
+
 ## Somatic point mutations {.tabset .active}
+
 ### Mutect 2
+```{r load_mutect2, echo=FALSE}
+mutect2_results <- scoreMutect2(PFconfig)
+tableWrapper(mutect2_results)
+```
 ### Strelka
+```{r load_strelka, echo=FALSE}
+strelka_results <- scoreStrelka(PFconfig)
+tableWrapper(strelka_results)
+```
+
 ### View Mutect 2
+```{r plot_mutect2, echo=FALSE,fig.width=15,fig.height=4}
+print( mutect2View(mutect2_results) )
+```
+
 ### View Strelka {.active}
+```{r plot_strelka, echo=FALSE,fig.width=15,fig.height=4}
+print( strelkaView(strelka_results) )
+```
 
 ## Germline point mutations {.tabset}
 ### HaplotypeCaller (normal only)

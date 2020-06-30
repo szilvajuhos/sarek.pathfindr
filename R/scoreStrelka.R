@@ -8,6 +8,7 @@ scoreStrelka <- function(PFconfig) {
   cat("Strelka Somatic indels file:  ", strelka_result_files["strelka_indel_file"], '\n')
   sample = strsplit(basename(strelka_result_files["strelka_snv_file"]), '_somatic')[[1]][1]
   
+  strelka_selected <- NULL
   # get data tables from package environment, or read them from files if they are not read yet
   hotspots_snv <- getSNVhotspots(PFconfig$hotspots_snv)
   # defining inframe also defines near_hotspots
@@ -294,9 +295,11 @@ scoreStrelka <- function(PFconfig) {
   setcolorder(x = selection, neworder = c(firstcols, cols[!cols %in% firstcols]))
   strelka_selected <-
     selection[order(cumstart, Allele)][order(rank_score, decreasing = T)]
+  strelka_selected <- strelka_selected[rank_score > 3]
   strelka_csv_file_name <- paste0(csv_dir, '/', sample, '_tumor.csv')
   cat("Working dir is ",getwd(),"\n")
   cat("Writing results to ", strelka_csv_file_name, "\n")
-  fwrite(strelka_selected[rank_score > 3], file = strelka_csv_file_name)
+  fwrite(strelka_selected, file = strelka_csv_file_name)
   cat("Ready.\n")
+  strelka_selected
 }
