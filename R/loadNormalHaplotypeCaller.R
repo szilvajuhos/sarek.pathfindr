@@ -327,9 +327,12 @@ loadNormalHaplotypeCaller <- function(haplotypecaller_N_file) {
   cols=colnames(selection)
   setcolorder(x = selection,neworder = c(firstcols,cols[!cols %in% firstcols]))
   haplotypecaller_selected <- selection[order(cumstart,Allele)][order(rank_score,decreasing = T)]
+  haplotypecaller_selected <- haplotypecaller_selected[rank_score>3]
   hc_filename <- paste0(csv_dir,'/',sample,'_haplotypecaller.csv')
-  fwrite(haplotypecaller_selected[rank_score>3],file=hc_filename)
+  fwrite(haplotypecaller_selected,file=hc_filename)
+  
   cat("Ranks written to ",hc_filename,"\n")  
   ix=haplotypecaller_selected$sample==strsplit(basename(haplotypecaller_N_file),'[.]')[[1]][1] # first file is the normal
   #tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')][rank_score>3])
+  haplotypecaller_selected
 }

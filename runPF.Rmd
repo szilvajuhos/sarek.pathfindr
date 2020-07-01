@@ -106,9 +106,7 @@ tableWrapper <- function(table) {
 #### ControlFreec
 <!-- Read Control Freec copy number data -->
 ```{r load_control_freec}
-tic("Control-FREEC scores and LOH")
 freec_results = score_freec(PFconfig)
-toc()
 tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn tuples in R one day
 ```
 #### Control-FREEC Genome plot
@@ -191,12 +189,21 @@ print( mutect2View(mutect2_results) )
 ```
 
 ### View Strelka {.active}
-```{r plot_strelka, echo=FALSE,fig.width=15,fig.height=4}
+```{r plot_strelka, echo=TRUE,fig.width=15,fig.height=4}
 print( strelkaView(strelka_results) )
 ```
 
 ## Germline point mutations {.tabset}
+
 ### HaplotypeCaller (normal only)
+<!-- Read annotated small variant data (Haplotype caller, both normal and tumor) -->
+```{r load_haplotypecaller, echo=TRUE}
+haplotypecaller_N_file <- haplotypeCallerFiles(PFconfig)[1]
+haplotypecaller_selected <- scoreHaplotypeCaller(PFconfig)
+ix=haplotypecaller_selected$sample==strsplit(basename(haplotypecaller_N_file),'[.]')[[1]][1] # first file is the normal
+tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')])
+```
+
 ### HaplotypeCaller (all samples)
 ### HaplotypeCaller overlap
 

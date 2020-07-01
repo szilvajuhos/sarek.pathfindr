@@ -4,10 +4,12 @@ scoreHaplotypeCaller <- function(PFconfig) {
   cat("HaplotypeCaller TUMOR file: ", hc_file["hc_tumor"],"\n")
   
   tic("Ranking NORMAL calls")
-  loadNormalHaplotypeCaller(hc_file["hc_normal"])
+  hc_selected <- loadNormalHaplotypeCaller(hc_file["hc_normal"])
   toc()
   
-  tic("Processing TUMOR calls")
-  loadTumorHaplotypeCaller(hc_file["hc_tumor"])
-  toc()
+  # tic("Processing TUMOR calls")
+  # loadTumorHaplotypeCaller(hc_file["hc_tumor"])
+  # toc()
+  
+  hc_selected
 }
