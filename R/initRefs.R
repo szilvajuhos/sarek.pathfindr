@@ -47,7 +47,10 @@ assign(x = "alltier1", NULL, envir = pfenv)
 assign(x = "alltier2", NULL, envir = pfenv)
 
 getEnvVariable <- function(varStr) {
-  get(varStr,pfenv)
+  # instead of bailing out, we are adding a NULL
+  value <- NULL
+  try( value <- get(varStr,pfenv) )
+  value
 }
 
 # tic("Shaping tumor genes dataframe")

@@ -7,6 +7,8 @@ loadNormalHaplotypeCaller <- function(haplotypecaller_N_file) {
   vcf = VariantAnnotation::readVcf(file = haplotypecaller_N_file, genome = reference_genome)
   sample = strsplit(basename(haplotypecaller_N_file), '[.]')[[1]][1]
   haplotypecaller_ids[[sample]] = names(vcf)
+  # we have to have these IDs to calculate oeverlap later
+  assign(x = "haplotypecaller_ids", value = haplotypecaller_ids, envir = pfenv)
   toc()
   
   # if (s>1) # if not the normal, keep only IDs already present (the normal is first)  <--- this is why somatic variants are not shown

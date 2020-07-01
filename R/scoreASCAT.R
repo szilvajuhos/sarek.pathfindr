@@ -23,12 +23,15 @@ score_ascat <- function(PFconfig) {
   cat(" ------------ Score ASCAT function -------------\n")
   cat("Reference is: ",reference_genome,'\n')
   ascat_result_files <- ascat_files(PFconfig)
+  load_ascat(ascat_result_files)
+}
+
+ascat_header <- function(ascat_result_files) {
   cat('Selected files for ASCAT in',PFconfig$ascat_directory,':\n\n')
   cat("ASCAT Tumor Ratio file:  ", ascat_result_files["ascat_Tratio_file"], '\n')
   cat("ASCAT Normal Ratio file: ", ascat_result_files["ascat_Nratio_file"], '\n')
   cat("ASCAT Tumor BAF file:    ", ascat_result_files["ascat_Tbaf_file"], '\n')
   cat("ASCAT Normal BAF file:   ", ascat_result_files["ascat_Nbaf_file"], '\n')
   cat("ASCAT Segment file:      ", ascat_result_files["ascat_segment_file"], '\n')
-  load_ascat(ascat_result_files)
 }
 

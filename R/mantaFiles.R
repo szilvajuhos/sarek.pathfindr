@@ -6,6 +6,7 @@ mantaFiles <- function(PFconfig) {
   manta_tumor_file<-grep(pattern = ".*/Manta_.*vs.*somaticSV.vcf.*.vcf$",result_files,value = T)
   manta_normal_file<-grep(pattern = ".*/Manta_.*vs.*diploidSV.vcf.*.vcf$",result_files,value = T)[1]
   tic("Read SweGen SV counts")
+  # TODO: get rid of hardcoded allele-frequency database
   swegen_manta_all<-list(data.table::fread('~/reports/reference_data/swegen_sv_counts.csv',key='name'))
   toc()
   

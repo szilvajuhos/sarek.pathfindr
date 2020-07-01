@@ -39,67 +39,43 @@ knitr::opts_chunk$set(echo = FALSE, comment = '', warning=F, error = F)
 options(width = 600)
 ```
 # {.tabset .tabset-pills}
+
+```{r project_and_refgenome}
+cat('Sample:',basename(getwd()),'\tDirectory:',getwd(),'\nDate:',date())
+```
+
 ## Setup {.tabset}
+
 ### Load dependencies
 ```{r load_dependencies}
 library(config)
 library(tictoc)
 library(sarek.pathfindr)
 
-makelinks <- function(strings,sep='&') {
-  alltumorgenes <- sarek.pathfindr::getEnvVariable("alltumorgenes")
-  if (length(strings)>0) for (i in 1:length(strings)) if (strings[i]!='') {
-    t=strsplit(strings[i],sep)[[1]]
-    for (j in 1:length(t)) {
-      if (t[j] %in% alltumorgenes) {
-        t[j]=kableExtra::cell_spec(t[j], link = paste0("https://cancer.sanger.ac.uk/cosmic/gene/analysis?ln=",t[j]),format = 'html')
-      } else if (startsWith(t[j],'rs')) {
-        t[j]=kableExtra::cell_spec(t[j], link = paste0("https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=",substr(t[j],3,100)),format = 'html')
-      } else if (startsWith(t[j],'COSM')) {
-        t[j]=kableExtra::cell_spec(t[j], link = paste0("https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=",substr(t[j],5,100)),format = 'html')
-      }
-    }
-    strings[i]=paste(t,collapse = ' ')
-  }
-  return(strings)
-}
-
-tableWrapper <- function(table) {
-  if ('Existing_variation' %in% colnames(table)) {
-    table$Existing_variation=makelinks(table$Existing_variation)
-  }
-  if ('Gene_Name' %in% colnames(table)) {
-    table$Gene_Name[nchar(table$Gene_Name)>200]='many'
-  }
-  if ('SYMBOL' %in% colnames(table)) {
-    table$SYMBOL=makelinks(table$SYMBOL)
-  }
-  if ('cancer_genes' %in% colnames(table)) {
-    table$cancer_genes=makelinks(table$cancer_genes,sep=' ')
-  }
-  if ('AD_TUMOR' %in% colnames(table)) {
-    table$AD_TUMOR=unlist(lapply(table$AD_TUMOR,paste,collapse=', '))
-  }
-  if ('AD_NORMAL' %in% colnames(table)) {
-    table$AD_NORMAL=unlist(lapply(table$AD_NORMAL,paste,collapse=', '))
-  }
-  if ('AD' %in% colnames(table)) {
-    if (is.list(table$AD)) table$AD=unlist(lapply(table$AD,paste,collapse=', '))
-  }
-
-  samples=sort(unique(table$sample))
-
-  if (T) if (nrow(table)>0) htmlTable::htmlTable(table,
-            col.rgroup = c("none", "#F7F7F7"),
-            tspanner=paste('Rank score:',unique(table$rank_score)),
-            n.tspanner=rev(table(table$rank_score)))
-  # if (length(samples)>1) htmlTable(table, 
-  #           col.rgroup = c("none", "#F7F7F7"),
-  #           n.rgroup='',
-  #           tspanner=paste('Rank score:',unique(table$rank_score)),
-  #           n.tspanner=table(table$rank_score))
-}
+installed_packages <- as.data.frame(installed.packages()[,c(1,3:4)])
+rownames(installed_packages) <- NULL
+installed_packages <- installed_packages[is.na(installed_packages$Priority),1:2,drop=FALSE]
+print(installed_packages, row.names=FALSE)
 ```
+### List files {.active}
+<!-- First, make a list of files to read and visualize -->
+```{r list_files}
+cat('Reference genome: ',PFconfig$reference)
+ascat_header(ascat_files(PFconfig))
+freec_header(freec_files(PFconfig))
+cat("Mutect2 Somatic Variants file:  ", PFconfig$mutect2file, '\n')
+haplotypeCallerFiles <- haplotypeCallerFiles(PFconfig)
+cat("HaplotypeCaller Normal file: ", haplotypeCallerFiles[1])
+cat("HaplotypeCaller Tumor file: ", haplotypeCallerFiles[2])
+manta_files <- mantaFiles(PFconfig)
+cat("Manta normal file: ", manta_files["manta_normal_file"][[1]])
+cat("Manta tumor file: ", manta_files["manta_tumor_file"][[1]])
+cat("Manta allele frequencies file: ... to be added")
+strelka_files <- strelkaFiles(PFconfig)
+cat("Strelka Somatic SNVs file:  ", strelka_files["strelka_snv_file"], '\n')
+cat("Strelka Somatic indels file:  ", strelka_files["strelka_indel_file"], '\n')
+```
+
 
 ## Copy number {.tabset}
 
@@ -149,7 +125,7 @@ somatic_manta <- loadSomaticManta(manta_vcfs)
 tableWrapper(somatic_manta)
 ```
 ### Manta (germline)
-```{r load_manta_normal, echo=TRUE}
+```{r load_manta_normal, echo=FALSE}
 # It takes a while, so skip for testing
 print("Manta Germline Results should be here")
 # germline_manta <- loadGermlineManta(manta_vcfs)
@@ -189,23 +165,28 @@ print( mutect2View(mutect2_results) )
 ```
 
 ### View Strelka {.active}
-```{r plot_strelka, echo=TRUE,fig.width=15,fig.height=4}
+```{r plot_strelka, echo=FALSE,fig.width=15,fig.height=4}
 print( strelkaView(strelka_results) )
 ```
 
 ## Germline point mutations {.tabset}
 
-### HaplotypeCaller (normal only)
+### HaplotypeCaller (all samples)
 <!-- Read annotated small variant data (Haplotype caller, both normal and tumor) -->
-```{r load_haplotypecaller, echo=TRUE}
+```{r load_haplotypecaller, echo=FALSE}
 haplotypecaller_N_file <- haplotypeCallerFiles(PFconfig)[1]
-haplotypecaller_selected <- scoreHaplotypeCaller(PFconfig)
-ix=haplotypecaller_selected$sample==strsplit(basename(haplotypecaller_N_file),'[.]')[[1]][1] # first file is the normal
-tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')])
+cat(haplotypecaller_N_file)
+# haplotypecaller_selected <- scoreHaplotypeCaller(PFconfig)
+# ix=haplotypecaller_selected$sample==strsplit(basename(haplotypecaller_N_file),'[.]')[[1]][1] # first file is the normal
+# tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')])
 ```
 
-### HaplotypeCaller (all samples)
 ### HaplotypeCaller overlap
+```{r haplotypecaller_overlap, echo=FALSE}
+cat("Overlap placeholder")
+#table <- haplotypeCallerOverlap(haplotypecaller_N_file)
+#htmlTable::htmlTable(table)
+```
 
 ## All {.tabset}
 ### Top ranked {.active}
