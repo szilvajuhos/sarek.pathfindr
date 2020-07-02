@@ -1,5 +1,6 @@
 default:
   reference:  "GRCh38"
+  subject: "TEST_SUBJECT"
   ascat_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/VariantCalling/Ascat"
   freec_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/VariantCalling/ControlFreec"
   manta_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/Annotation/SnpEff"
