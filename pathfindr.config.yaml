@@ -2,7 +2,7 @@ default:
   reference:  "GRCh38"
   subject: "TEST_SUBJECT"
   ascat_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/VariantCalling/Ascat"
-  freec_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/VariantCalling/ControlFreec"
+  freec_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/VariantCalling/ControlFREEC"
   manta_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/Annotation/SnpEff"
   strelka_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/Annotation/VEP.CADD"
   haplotyper_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/Annotation/VEP.CADD"

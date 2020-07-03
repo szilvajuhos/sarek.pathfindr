@@ -84,7 +84,7 @@ cat("Strelka Somatic indels file:  ", strelka_files["strelka_indel_file"], '\n')
 <!-- Read Control Freec copy number data -->
 ```{r load_control_freec}
 cat("Control-FREEC results")
-#freec_results = score_freec(PFconfig)
+freec_results <- score_freec(PFconfig)
 #tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn tuples in R one day
 ```
 
@@ -136,16 +136,16 @@ cat("ASCAT Scatter plot")
 ### Manta (tumor)
 ```{r load_manta_tumor, echo=FALSE}
 cat("Manta tumor table")
-#manta_vcfs <- mantaFiles(PFconfig)
-#somatic_manta <- loadSomaticManta(manta_vcfs)
-#tableWrapper(somatic_manta)
+manta_vcfs <- mantaFiles(PFconfig)
+somatic_manta <- loadSomaticManta(manta_vcfs)
+tableWrapper(somatic_manta)
 ```
 ### Manta (germline)
 ```{r load_manta_normal, echo=FALSE}
 # It takes a while, so skip for testing
 cat("Manta Germline table")
-# germline_manta <- loadGermlineManta(manta_vcfs)
-# tableWrapper(germline_manta)
+germline_manta <- loadGermlineManta(manta_vcfs)
+tableWrapper(germline_manta)
 ```
 
 &nbsp;
@@ -169,14 +169,14 @@ cat("Manta Germline table")
 ### Mutect 2
 ```{r load_mutect2, echo=FALSE}
 cat("Mutect2 table")
-#mutect2_results <- scoreMutect2(PFconfig)
-#tableWrapper(mutect2_results)
+mutect2_results <- scoreMutect2(PFconfig)
+tableWrapper(mutect2_results)
 ```
 ### Strelka
 ```{r load_strelka, echo=FALSE}
 cat("Strelka table")
-#strelka_results <- scoreStrelka(PFconfig)
-#tableWrapper(strelka_results)
+strelka_results <- scoreStrelka(PFconfig)
+tableWrapper(strelka_results)
 ```
 
 ### View Mutect 2
@@ -215,9 +215,44 @@ table <- haplotypeCallerOverlap()
 htmlTable::htmlTable(table)
 ```
 
-<!-- ## All {.tabset} -->
-<!-- ### Top ranked {.active} -->
-<!-- &nbsp; -->
+## All {.tabset}
+
+### Top ranked {.active}
+```{r} 
+mutect2SelectedView(mutect2_results) 
+```
+&nbsp;
+```{r} 
+strelkaSelectedView(strelka_results) 
+```
+&nbsp;
+```{r}
+haplotypeCallerSelectedView(haplotypecaller_selected)
+```
+&nbsp;
+```{r}
+if(exists('somatic_manta'))
+  mantaTumorSelectedView(somatic_manta)
+```
+&nbsp;
+```{r}
+if(exists('germline_manta'))
+  mantaTumorSelectedView(somatic_manta)
+```
+&nbsp;
+```{r}
+if(exists('germline_manta'))
+    mantaGermlineSelectedView(germline_manta)
+```
+&nbsp;
+```{r}
+if(exists('freec_results'))
+  freecSelectedView(freec_results['FREEC_CNVs'][[1]])
+```
+&nbsp;
+
+
+
 <!-- ### Save to files -->
 
 <!-- ## Chromosomes {.tabset} -->
