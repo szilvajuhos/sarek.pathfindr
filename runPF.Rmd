@@ -204,14 +204,16 @@ tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')])
 ```
 
 
-<!-- ### HaplotypeCaller (all samples) -->
+### HaplotypeCaller (all samples)
+```{r haplotypecaller_T+N, echo=FALSE}
+tableWrapper(haplotypecaller_selected[,-c('cumstart','cumend','DOMAINS')][rank_score>3])
+```
 
-<!-- ### HaplotypeCaller overlap -->
-<!-- ```{r haplotypecaller_overlap, echo=FALSE} -->
-<!-- cat("Overlap placeholder") -->
-<!-- #table <- haplotypeCallerOverlap(haplotypecaller_N_file) -->
-<!-- #htmlTable::htmlTable(table) -->
-<!-- ``` -->
+### HaplotypeCaller overlap
+```{r haplotypecaller_overlap, echo=FALSE}
+table <- haplotypeCallerOverlap()
+htmlTable::htmlTable(table)
+```
 
 <!-- ## All {.tabset} -->
 <!-- ### Top ranked {.active} -->

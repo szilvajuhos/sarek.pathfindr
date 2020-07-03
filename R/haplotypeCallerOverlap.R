@@ -1,8 +1,8 @@
-haplotypeCallerOverlap <- function(haplotypecaller_N_file) {
+haplotypeCallerOverlap <- function() {
   table <- NULL
   haplotypecaller_ids <- getEnvVariable('haplotypecaller_ids')
   
-  if ( exists('haplotypecaller_N_file') && !is.null(haplotypecaller_ids) ) {
+  if ( !is.null(haplotypecaller_ids) ) {
       names = names(haplotypecaller_ids)
       nsamples = length(names)
       table = matrix(

@@ -1,9 +1,9 @@
 loadHaplotypeCaller <- function(haplotypecaller_files) {
   haplotypecaller_selected <- NULL
+  haplotypecaller_ids <- NULL
   normal_sample <- strsplit(basename(haplotypecaller_files[1]), '[.]')[[1]][1]
   if (!is.null(haplotypecaller_files)) {
     haplotypecaller_table = NULL
-    haplotypecaller_ids = NULL
     for (s in 1:length(haplotypecaller_files)) {
       tic("Reading ",haplotypecaller_files[s])
       vcf = readVcf(file = haplotypecaller_files[s], genome = reference_genome)
@@ -351,5 +351,6 @@ loadHaplotypeCaller <- function(haplotypecaller_files) {
     fwrite(haplotypecaller_selected, file = hc_csv_name)
     cat("Results written to ",hc_csv_name)
   }
+  assign(x='haplotypecaller_ids',value=haplotypecaller_ids,envir=pfenv)
   haplotypecaller_selected
 }
