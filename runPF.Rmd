@@ -85,15 +85,15 @@ cat("Strelka Somatic indels file:  ", strelka_files["strelka_indel_file"], '\n')
 ```{r load_control_freec}
 cat("Control-FREEC results")
 freec_results <- score_freec(PFconfig)
-#tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn tuples in R one day
+tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn tuples in R one day
 ```
 
 ### Ascat
 <!-- Read ASCAT copy number data -->
 ```{r load_ascat}
 cat("ASCAT results")
-#ascat_results = score_ascat(PFconfig)
-#tableWrapper(ascat_results['ASCAT_CNVs'][[1]]) # table in report
+ascat_results = score_ascat(PFconfig)
+tableWrapper(ascat_results['ASCAT_CNVs'][[1]]) # table in report
 ```
 
 ### View Control-FREEC
@@ -101,7 +101,7 @@ cat("ASCAT results")
 #### Control-FREEC Genome plot
 ```{r plot_control_freec,fig.width=15,fig.height=7}
 cat("Control-FREEC genome plot")
-#print( controlFREECGenomeView( freec_results ))
+print( controlFREECGenomeView( freec_results ))
 ```
 
 &nbsp;
@@ -119,7 +119,7 @@ cat("Control-FREEC scatter plot")
 <!-- Plot ASCAT tumor copy number log ratio, tBAF and nBAF -->
 ```{r plot_ascat,fig.width=15,fig.height=7}
 cat("ASCAT Genome plot")
-#print( ascatGenomeView(ascat_results) )
+print( ascatGenomeView(ascat_results) )
 ```
 
 &nbsp;
@@ -127,7 +127,7 @@ cat("ASCAT Genome plot")
 #### ASCAT Scatter plot
 ```{r scatter_plot_ascat, echo=FALSE,fig.width=15,fig.height=8,warning=F}
 cat("ASCAT Scatter plot")
-#print( ASCATScatterView( ascat_results['binned'][[1]] ) )
+print( ASCATScatterView( ascat_results['binned'][[1]] ) )
 ```
 
 ## Structural variants {.tabset}
@@ -158,10 +158,10 @@ tableWrapper(germline_manta)
   # also selected Manta variations are passed
   # in the global 'pfenv' environment
   
-  #g <- structuralVariationView(manta_vcfs)
-  #if(!is.null(g)) {
-  #  print(g)
-  #}
+  g <- structuralVariationView(manta_vcfs)
+  if(!is.null(g)) {
+    print(g)
+  }
 ```
 
 ## Somatic point mutations {.tabset .active}
@@ -182,13 +182,13 @@ tableWrapper(strelka_results)
 ### View Mutect 2
 ```{r plot_mutect2, echo=FALSE,fig.width=15,fig.height=4}
 cat("Mutect2 plot")
-#print( mutect2View(mutect2_results) )
+print( mutect2View(mutect2_results) )
 ```
 
 ### View Strelka {.active}
 ```{r plot_strelka, echo=FALSE,fig.width=15,fig.height=4}
 cat("Strelka plot")
-#print( strelkaView(strelka_results) )
+print( strelkaView(strelka_results) )
 ```
 
 ## Germline point mutations {.tabset}
@@ -202,7 +202,6 @@ haplotypecaller_selected <- scoreHaplotypeCaller(PFconfig)
 ix=haplotypecaller_selected$sample==strsplit(basename(haplotypecaller_N_file),'[.]')[[1]][1] # first file is the normal
 tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')])
 ```
-
 
 ### HaplotypeCaller (all samples)
 ```{r haplotypecaller_T+N, echo=FALSE}
@@ -237,11 +236,6 @@ if(exists('somatic_manta'))
 &nbsp;
 ```{r}
 if(exists('germline_manta'))
-  mantaTumorSelectedView(somatic_manta)
-```
-&nbsp;
-```{r}
-if(exists('germline_manta'))
     mantaGermlineSelectedView(germline_manta)
 ```
 &nbsp;
@@ -250,11 +244,21 @@ if(exists('freec_results'))
   freecSelectedView(freec_results['FREEC_CNVs'][[1]])
 ```
 &nbsp;
-
-
-
-<!-- ### Save to files -->
-
+```{r}
+if(exists('ascat_results'))
+  ascatSelectedView(ascat_results['ASCAT_CNVs'][[1]])
+```
+&nbsp;
+### Save to files
+```{r save_to_BED_files}
+#export bed file of all relevant genomic regions
+saveToBed(PFconfig$subject,
+           somatic_manta,
+           germline_manta,
+           mutect2_results,
+           strelka_results,
+           haplotypecaller_selected)
+```
 <!-- ## Chromosomes {.tabset} -->
 <!-- ### 1 -->
 <!-- ### 2 -->
