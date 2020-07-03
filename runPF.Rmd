@@ -196,50 +196,50 @@ cat("Strelka plot")
 ### HaplotypeCaller (normal only)
 <!-- Read annotated small variant data (Haplotype caller, both normal and tumor) -->
 ```{r load_haplotypecaller, echo=FALSE}
-cat("HaplotypeCaller table")
-#haplotypecaller_N_file <- haplotypeCallerFiles(PFconfig)[1]
-#cat(haplotypecaller_N_file)
-# haplotypecaller_selected <- scoreHaplotypeCaller(PFconfig)
-# ix=haplotypecaller_selected$sample==strsplit(basename(haplotypecaller_N_file),'[.]')[[1]][1] # first file is the normal
-# tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')])
+haplotypecaller_N_file <- haplotypeCallerFiles(PFconfig)[1]
+cat(haplotypecaller_N_file)
+haplotypecaller_selected <- scoreHaplotypeCaller(PFconfig)
+ix=haplotypecaller_selected$sample==strsplit(basename(haplotypecaller_N_file),'[.]')[[1]][1] # first file is the normal
+tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')])
 ```
 
-### HaplotypeCaller (all samples)
 
-### HaplotypeCaller overlap
-```{r haplotypecaller_overlap, echo=FALSE}
-cat("Overlap placeholder")
-#table <- haplotypeCallerOverlap(haplotypecaller_N_file)
-#htmlTable::htmlTable(table)
-```
+<!-- ### HaplotypeCaller (all samples) -->
 
-## All {.tabset}
-### Top ranked {.active}
-&nbsp;
-### Save to files
+<!-- ### HaplotypeCaller overlap -->
+<!-- ```{r haplotypecaller_overlap, echo=FALSE} -->
+<!-- cat("Overlap placeholder") -->
+<!-- #table <- haplotypeCallerOverlap(haplotypecaller_N_file) -->
+<!-- #htmlTable::htmlTable(table) -->
+<!-- ``` -->
 
-## Chromosomes {.tabset}
-### 1
-### 2
-### 3
-### 4
-### 5
-### 6
-### 7
-### 8
-### 9
-### 10
-### 11
-### 12
-### 13
-### 14
-### 15
-### 16
-### 17
-### 18
-### 19
-### 20
-### 21
-### 22
-### X
-### Y
+<!-- ## All {.tabset} -->
+<!-- ### Top ranked {.active} -->
+<!-- &nbsp; -->
+<!-- ### Save to files -->
+
+<!-- ## Chromosomes {.tabset} -->
+<!-- ### 1 -->
+<!-- ### 2 -->
+<!-- ### 3 -->
+<!-- ### 4 -->
+<!-- ### 5 -->
+<!-- ### 6 -->
+<!-- ### 7 -->
+<!-- ### 8 -->
+<!-- ### 9 -->
+<!-- ### 10 -->
+<!-- ### 11 -->
+<!-- ### 12 -->
+<!-- ### 13 -->
+<!-- ### 14 -->
+<!-- ### 15 -->
+<!-- ### 16 -->
+<!-- ### 17 -->
+<!-- ### 18 -->
+<!-- ### 19 -->
+<!-- ### 20 -->
+<!-- ### 21 -->
+<!-- ### 22 -->
+<!-- ### X -->
+<!-- ### Y -->
