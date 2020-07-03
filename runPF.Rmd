@@ -259,9 +259,22 @@ saveToBed(PFconfig$subject,
            strelka_results,
            haplotypecaller_selected)
 ```
-<!-- ## Chromosomes {.tabset} -->
-<!-- ### 1 -->
-<!-- ### 2 -->
+## Chromosomes {.tabset}
+
+### 1
+```{r plot_chr1,fig.width=15,fig.height=10}
+chr="chr1"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 2
+```{r plot_chr2,fig.width=15,fig.height=10}
+chr="chr2"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
 <!-- ### 3 -->
 <!-- ### 4 -->
 <!-- ### 5 -->
