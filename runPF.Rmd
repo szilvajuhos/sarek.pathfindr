@@ -275,25 +275,157 @@ cat('Chromosome',chr)
 chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
 ```
 
-<!-- ### 3 -->
-<!-- ### 4 -->
-<!-- ### 5 -->
-<!-- ### 6 -->
-<!-- ### 7 -->
-<!-- ### 8 -->
-<!-- ### 9 -->
-<!-- ### 10 -->
-<!-- ### 11 -->
-<!-- ### 12 -->
-<!-- ### 13 -->
-<!-- ### 14 -->
-<!-- ### 15 -->
-<!-- ### 16 -->
-<!-- ### 17 -->
-<!-- ### 18 -->
-<!-- ### 19 -->
-<!-- ### 20 -->
-<!-- ### 21 -->
-<!-- ### 22 -->
-<!-- ### X -->
-<!-- ### Y -->
+### 3
+```{r plot_chr3,fig.width=15,fig.height=10}
+chr="chr3"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 4
+```{r plot_chr4,fig.width=15,fig.height=10}
+chr="chr4"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 5
+```{r plot_chr5,fig.width=15,fig.height=10}
+chr="chr5"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 6
+```{r plot_chr6,fig.width=15,fig.height=10}
+chr="chr6"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 7
+```{r plot_chr7,fig.width=15,fig.height=10}
+chr="chr7"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 8
+```{r plot_chr8,fig.width=15,fig.height=10}
+chr="chr8"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 9
+```{r plot_chr9,fig.width=15,fig.height=10}
+chr="chr9"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 10
+```{r plot_chr10,fig.width=15,fig.height=10}
+chr="chr10"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 11
+```{r plot_chr11,fig.width=15,fig.height=10}
+chr="chr11"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 12
+```{r plot_chr12,fig.width=15,fig.height=10}
+chr="chr12"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 13
+```{r plot_chr13,fig.width=15,fig.height=10}
+chr="chr13"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 14
+```{r plot_chr14,fig.width=15,fig.height=10}
+chr="chr14"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 15
+```{r plot_chr15,fig.width=15,fig.height=10}
+chr="chr15"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 16
+```{r plot_chr16,fig.width=15,fig.height=10}
+chr="chr16"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 17
+```{r plot_chr17,fig.width=15,fig.height=10}
+chr="chr17"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 18
+```{r plot_chr18,fig.width=15,fig.height=10}
+chr="chr18"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 19
+```{r plot_chr19,fig.width=15,fig.height=10}
+chr="chr19"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 20
+```{r plot_chr20,fig.width=15,fig.height=10}
+chr="chr20"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 21
+```{r plot_chr21,fig.width=15,fig.height=10}
+chr="chr21"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### 22
+```{r plot_chr22,fig.width=15,fig.height=10}
+chr="chr22"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### X
+```{r plot_chrX,fig.width=15,fig.height=10}
+chr="chrX"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
+### Y
+```{r plot_chrY,fig.width=15,fig.height=10}
+chr="chrY"
+cat('Chromosome',chr)
+chromosomeView(chr, ascat_results, freec_results,somatic_manta,strelka_results,haplotypecaller_selected)
+```
+
