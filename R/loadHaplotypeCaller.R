@@ -1,6 +1,7 @@
 loadHaplotypeCaller <- function(haplotypecaller_files) {
   haplotypecaller_selected <- NULL
   haplotypecaller_ids <- NULL
+  reference_genome<-getEnvVariable('reference_genome')
   normal_sample <- strsplit(basename(haplotypecaller_files[1]), '[.]')[[1]][1]
   if (!is.null(haplotypecaller_files)) {
     haplotypecaller_table = NULL

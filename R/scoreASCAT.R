@@ -1,4 +1,5 @@
-ascat_files <- function(PFconfig) {
+ascat_files <- function() {
+  PFconfig <- getEnvVariable('PFconfig')
   ascat_result_files <- dir(path=PFconfig$ascat_directory, recursive = F,full.names = T)
   file_names_to_remove = unique(c(grep(pattern = '.png', x = ascat_result_files)))
   
@@ -19,10 +20,9 @@ ascat_files <- function(PFconfig) {
      )
 }
 
-score_ascat <- function(PFconfig) {
+score_ascat <- function() {
   cat(" ------------ Score ASCAT function -------------\n")
-  cat("Reference is: ",reference_genome,'\n')
-  ascat_result_files <- ascat_files(PFconfig)
+  ascat_result_files <- ascat_files()
   load_ascat(ascat_result_files)
 }
 

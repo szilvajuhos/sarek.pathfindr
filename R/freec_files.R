@@ -1,5 +1,6 @@
 # control freec files
-freec_files <-function(PFconfig) {
+freec_files <-function() {
+  PFconfig <- getEnvVariable('PFconfig')
   result_files <- dir(path = PFconfig$freec_directory, recursive = F,full.names = T)
   # TODO DRY it out
   file_names_to_remove=unique(c(grep(pattern = '.png',x = result_files)))

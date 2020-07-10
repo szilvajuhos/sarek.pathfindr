@@ -1,4 +1,5 @@
-strelkaFiles <- function(PFconfig) {
+strelkaFiles <- function() {
+  PFconfig<-getEnvVariable('PFconfig')
   # OK, this part has to be at a higher level at init
   result_files <- dir(path = PFconfig$strelka_directory, recursive = F,full.names = T)
 

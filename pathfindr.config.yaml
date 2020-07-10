@@ -1,6 +1,5 @@
 default:
   reference:  "GRCh38"
-  subject: "TEST_SUBJECT"
   ascat_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/VariantCalling/Ascat"
   freec_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/VariantCalling/ControlFREEC"
   manta_directory: "/home/szilva/dev/sarek.pathfindr/pf_test/Annotation/SnpEff"
@@ -22,3 +21,14 @@ default:
   hotspots_inframe: "~/reports/reference_data/hotspots_v2_inframe.csv"
   
   fusions_table: "~/reports/reference_data/cosmic_fusions_table.csv"
+
+  # score thresholds are always calculated as "greater than" (>), so 
+  # value 3 will _not_ be presented, only 4,5,...
+
+  default_threshold: 3
+  mutect2_threshold: 3
+  strelka_threshold: 3
+  haplotypecaller_threshold: 3
+  manta_threshold: 3
+  ascat_threshold: 3
+  freec_threshold: 3

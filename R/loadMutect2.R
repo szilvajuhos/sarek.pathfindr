@@ -1,4 +1,7 @@
 loadMutect2 <- function(mutect2_file) {
+  PFconfig <- getEnvVariable('PFconfig')
+  reference_genome<-getEnvVariable('reference_genome')
+  
   cat("Processing Mutect2 SNV calls\n")
   # used to store final results
   mutect2_selected <- NULL

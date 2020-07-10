@@ -1,6 +1,7 @@
 scoreStrelkaIndels <- function(strelka_indel_file,sample) {
   allpass=NULL
   table_indels=NULL
+  reference_genome<-getEnvVariable('reference_genome')
   vcfs=list()
   if (length(strelka_indel_file)>0) {
     # read indels

@@ -1,9 +1,10 @@
 loadSomaticManta <-function(manta_files){
-  alltier1 <- get("alltier1",pfenv)
-  alltier2 <- get("alltier2",pfenv)
+  reference_genome<-getEnvVariable('reference_genome')
+  alltier1 <- getEnvVariable("alltier1")
+  alltier2 <- getEnvVariable("alltier2")
   cosmic_fusions <- getCountTable(PFconfig$fusions_table,"fusions_table")
-  allfusionpairs <- get("allfusionpairs",pfenv)
-  allfusion <- get("allfusion",pfenv)
+  allfusionpairs <- getEnvVariable("allfusionpairs")
+  allfusion <- getEnvVariable("allfusion")
   selected_manta <- NULL
   manta_tumor_table <- NULL
   # first collect PASS ids from all samples

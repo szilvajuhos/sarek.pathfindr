@@ -1,4 +1,5 @@
-mantaFiles <- function(PFconfig) {
+mantaFiles <- function() {
+  PFconfig<-getEnvVariable('PFconfig')
   # OK, this part has to be at a higher level at init
   result_files <- dir(path = PFconfig$manta_directory, recursive = F,full.names = T)
   

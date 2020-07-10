@@ -1,8 +1,7 @@
-scoreStrelka <- function(PFconfig) {
+scoreStrelka <- function() {
   cat(" ------------ Score Strelka function -------------\n")
-  cat("Reference is: ", reference_genome, '\n')
-  
-  strelka_result_files <- strelkaFiles(PFconfig)
+  PFconfig<-getEnvVariable('PFconfig')
+  strelka_result_files <- strelkaFiles()
   cat('Selected files for Strelka in', getwd(), ':\n\n')
   cat("Strelka Somatic SNVs file:  ", strelka_result_files["strelka_snv_file"], '\n')
   cat("Strelka Somatic indels file:  ", strelka_result_files["strelka_indel_file"], '\n')

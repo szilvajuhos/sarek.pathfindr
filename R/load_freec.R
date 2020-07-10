@@ -7,11 +7,12 @@ load_freec <-function(result_files) {
   nbaf<-NULL
   binned <- NULL
   
-    # Get reference databases on the fly
+  # Get reference databases on the fly
+  PFconfig<-getEnvVariable('PFconfig')
   getTumorGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
-  tumorgenes <- get("tumorgenes",pfenv)
-  alltier1 <- get("alltier1",pfenv)
-  alltier2 <- get("alltier2",pfenv)
+  tumorgenes <- getEnvVariable("tumorgenes")
+  alltier1 <- getEnvVariable("alltier1")
+  alltier2 <- getEnvVariable("alltier2")
   
   if (!is.na(result_files["freec_Tratio_file"][1])) {
     # extract sample names

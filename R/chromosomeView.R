@@ -153,7 +153,7 @@ chromosomeView <- function(thischr, ascat_results, freec_results, manta_tumor_ta
     ## Germline muts
     if (!is.null(haplotypecaller_selected)) {
       alltumorgenes <- getEnvVariable('alltumorgenes')
-      hc_files <- haplotypeCallerFiles(PFconfig)
+      hc_files <- haplotypeCallerFiles()
       haplotypecaller_N_file <- hc_files[1]
       if (!is.null(hc_files)) {
         haplotypecaller_T_file <- hc_files[2]
@@ -180,6 +180,7 @@ chromosomeView <- function(thischr, ascat_results, freec_results, manta_tumor_ta
     }
 
     # add gene names
+    PFconfig<-getEnvVariable('PFconfig')
     getTumorGenes(PFconfig$tumorgenes, PFconfig$local_tumorgenes)
     tumorgenes <- getEnvVariable('tumorgenes')
     temp=tumorgenes[chr==thischr]

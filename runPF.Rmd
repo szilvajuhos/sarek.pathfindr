@@ -1,5 +1,6 @@
 ---
-title: "Pathfindr Report"
+title: "`r pftitle`"
+author: "created by: `r author`"
 output:
   html_document:
       toc: false
@@ -9,6 +10,9 @@ output:
       df_print: paged
 editor_options:
   chunk_output_type: console
+params:
+  pfconfig_file: "pathfindr.config.yaml"
+  subject: "UNKNOWN"
 ---
 <!-- CSS style for left alignment and for tables to look ok: -->
 <style>
@@ -44,9 +48,10 @@ options(width = 600)
 library(config)
 library(tictoc)
 library(sarek.pathfindr)
-
-cat('Sample:',PFconfig$subject,'\tWorking Directory:',getwd())
-cat('Configuration File: pathfindr.config.yaml','\nDate:',date())
+config_file <- params$pfconfig_file
+PFconfig <- readConfiguration(config_file)
+cat('Sample:',params$subject,'\tWorking Directory:',getwd())
+cat('Configuration File: ', config_file,'\nDate:',date())
 ```
 
 ## Setup {.tabset}
@@ -62,17 +67,17 @@ print(installed_packages, row.names=FALSE)
 <!-- First, make a list of files to read and visualize -->
 ```{r list_files}
 cat('Reference genome: ',PFconfig$reference)
-ascat_header(ascat_files(PFconfig))
-freec_header(freec_files(PFconfig))
+ascat_header(ascat_files())
+freec_header(freec_files())
 cat("Mutect2 Somatic Variants file:  ", PFconfig$mutect2file, '\n')
-haplotypeCallerFiles <- haplotypeCallerFiles(PFconfig)
+haplotypeCallerFiles <- haplotypeCallerFiles()
 cat("HaplotypeCaller Normal file: ", haplotypeCallerFiles[1])
 cat("HaplotypeCaller Tumor file: ", haplotypeCallerFiles[2])
-manta_files <- mantaFiles(PFconfig)
+manta_files <- mantaFiles()
 cat("Manta normal file: ", manta_files["manta_normal_file"][[1]])
 cat("Manta tumor file: ", manta_files["manta_tumor_file"][[1]])
 cat("Manta allele frequencies file: ... to be added")
-strelka_files <- strelkaFiles(PFconfig)
+strelka_files <- strelkaFiles()
 cat("Strelka Somatic SNVs file:  ", strelka_files["strelka_snv_file"], '\n')
 cat("Strelka Somatic indels file:  ", strelka_files["strelka_indel_file"], '\n')
 ```
@@ -84,7 +89,7 @@ cat("Strelka Somatic indels file:  ", strelka_files["strelka_indel_file"], '\n')
 <!-- Read Control Freec copy number data -->
 ```{r load_control_freec}
 cat("Control-FREEC results")
-freec_results <- score_freec(PFconfig)
+freec_results <- score_freec()
 tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn tuples in R one day
 ```
 
@@ -92,7 +97,7 @@ tableWrapper(freec_results['FREEC_CNVs'][[1]]) # table in report - I will learn 
 <!-- Read ASCAT copy number data -->
 ```{r load_ascat}
 cat("ASCAT results")
-ascat_results = score_ascat(PFconfig)
+ascat_results = score_ascat()
 tableWrapper(ascat_results['ASCAT_CNVs'][[1]]) # table in report
 ```
 
@@ -110,7 +115,7 @@ print( controlFREECGenomeView( freec_results ))
 <!-- Scatter plot -->
 ```{r scatter_plot_control_freec, echo=FALSE,fig.width=15,fig.height=8,warning=F}
 cat("Control-FREEC scatter plot")
-#print( controlFREECScatterView( freec_results['binned'][[1]] ) )
+print( controlFREECScatterView( freec_results['binned'][[1]] ) )
 ```
 
 ### View Ascat {.active}
@@ -136,7 +141,7 @@ print( ASCATScatterView( ascat_results['binned'][[1]] ) )
 ### Manta (tumor)
 ```{r load_manta_tumor, echo=FALSE}
 cat("Manta tumor table")
-manta_vcfs <- mantaFiles(PFconfig)
+manta_vcfs <- mantaFiles()
 somatic_manta <- loadSomaticManta(manta_vcfs)
 tableWrapper(somatic_manta)
 ```
@@ -169,13 +174,13 @@ tableWrapper(germline_manta)
 ### Mutect 2
 ```{r load_mutect2, echo=FALSE}
 cat("Mutect2 table")
-mutect2_results <- scoreMutect2(PFconfig)
+mutect2_results <- scoreMutect2()
 tableWrapper(mutect2_results)
 ```
 ### Strelka
 ```{r load_strelka, echo=FALSE}
 cat("Strelka table")
-strelka_results <- scoreStrelka(PFconfig)
+strelka_results <- scoreStrelka()
 tableWrapper(strelka_results)
 ```
 
@@ -196,9 +201,9 @@ print( strelkaView(strelka_results) )
 ### HaplotypeCaller (normal only)
 <!-- Read annotated small variant data (Haplotype caller, both normal and tumor) -->
 ```{r load_haplotypecaller, echo=FALSE}
-haplotypecaller_N_file <- haplotypeCallerFiles(PFconfig)[1]
+haplotypecaller_N_file <- haplotypeCallerFiles()[1]
 cat(haplotypecaller_N_file)
-haplotypecaller_selected <- scoreHaplotypeCaller(PFconfig)
+haplotypecaller_selected <- scoreHaplotypeCaller()
 ix=haplotypecaller_selected$sample==strsplit(basename(haplotypecaller_N_file),'[.]')[[1]][1] # first file is the normal
 tableWrapper(haplotypecaller_selected[ix][,-c('cumstart','cumend','DOMAINS')])
 ```
@@ -252,7 +257,7 @@ if(exists('ascat_results'))
 ### Save to files
 ```{r save_to_BED_files}
 #export bed file of all relevant genomic regions
-saveToBed(PFconfig$subject,
+saveToBed(params$subject,
            somatic_manta,
            germline_manta,
            mutect2_results,

@@ -5,6 +5,7 @@ scoreStrelkaSNVs <- function(strelka_snv_file,sample) {
   vcf=NULL
   vcfs=list()
   tic("Reading SNVs VCF")
+  reference_genome<-getEnvVariable('reference_genome')
   if (length(strelka_snv_file)>0) for (s in 1:length(strelka_snv_file)) {
     # read snvs
     vcfs[[strelka_snv_file]]=VariantAnnotation::readVcf(file = strelka_snv_file,genome=reference_genome)

@@ -1,7 +1,6 @@
-score_freec <- function(PFconfig) {
+score_freec <- function() {
   cat(" ------------ Score Control-FREEC function -------------\n")
-  cat("Reference is: ",reference_genome,'\n')
-  freec_result_files <- freec_files(PFconfig)
+  freec_result_files <- freec_files()
   freec_header(freec_result_files)
   load_freec(freec_result_files)
 }

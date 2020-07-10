@@ -1,4 +1,4 @@
-scoreHaplotypeCaller <- function(PFconfig) {
-  hc_selected <- loadHaplotypeCaller( haplotypeCallerFiles(PFconfig) )
+scoreHaplotypeCaller <- function() {
+  hc_selected <- loadHaplotypeCaller( haplotypeCallerFiles() )
   hc_selected
 }

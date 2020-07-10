@@ -23,11 +23,6 @@ chrsz = data.table(
              50727961, 155682361, 56827081)
   )
 
-
-cat("Reading configuration and auxiliary datafiles\n")
-tic("To get configuration is ")
-PFconfig <- config::get(file = "pathfindr.config.yaml")
-reference_genome <- PFconfig$reference
 # create an environment that can be accessed through the whole package
 # we are not reading all the files at the beginning, only when they are needed
 pfenv = new.env() 
