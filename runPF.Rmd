@@ -258,11 +258,11 @@ if(exists('ascat_results'))
 ```{r save_to_BED_files}
 #export bed file of all relevant genomic regions
 saveToBed(params$subject,
-           somatic_manta,
-           germline_manta,
-           mutect2_results,
-           strelka_results,
-           haplotypecaller_selected)
+          somatic_manta,
+          germline_manta,
+          mutect2_results,
+          strelka_results,
+          haplotypecaller_selected)
 ```
 ## Chromosomes {.tabset}
 

@@ -347,7 +347,7 @@ loadHaplotypeCaller <- function(haplotypecaller_files) {
     
     haplotypecaller_selected <-
       selection[order(cumstart, Allele)][order(rank_score, decreasing = T)]
-    haplotypecaller_selected <- haplotypecaller_selected[rank_score > 3]
+    haplotypecaller_selected <- haplotypecaller_selected[rank_score > getRankThreshold("haplotypecaller_threshold")]
     hc_csv_name <- paste0(csv_dir, '/', normal_sample, '_ranks.csv')
     fwrite(haplotypecaller_selected, file = hc_csv_name)
     cat("Results written to ",hc_csv_name)

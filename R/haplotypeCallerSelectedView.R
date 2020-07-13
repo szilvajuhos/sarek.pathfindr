@@ -1,6 +1,6 @@
 haplotypeCallerSelectedView <- function(haplotypecaller_selected) {
   cat('HaplotypeCaller')
-  t = haplotypecaller_selected[rank_score > 3]
+  t = haplotypecaller_selected[rank_score > getRankThreshold("haplotypecaller_threshold")]
   if (nrow(t) > 0) {
     t = data.table(
       Sample = t$sample,

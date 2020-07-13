@@ -1,7 +1,7 @@
 mantaTumorSelectedView <- function(manta_tumor_selected) {
   cat('Manta somatic')
   try({
-    t = manta_tumor_selected[rank_score > 2]
+    t = manta_tumor_selected[rank_score > getRankThreshold("manta_threshold")]
     t$Gene_Name[nchar(t$Gene_Name) > 100] = 'many'
     if (nrow(t) > 0) {
       t = unique(

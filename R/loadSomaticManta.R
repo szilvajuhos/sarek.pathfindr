@@ -278,11 +278,12 @@ loadSomaticManta <-function(manta_files){
       manta_tumor_selected <- selection[order(Feature_ID)][order(rank_score,decreasing = T)]
       manta_tumor_file_name <- paste0(csv_dir,'/',sub("Manta_","",sample),'_manta_tumor.csv')
       # sometimes we have CSQ (VEP annotation) sometimes we don't
+      manta_threshold <- getRankThreshold("manta_threshold")
       if(length(grep('CSQ',colnames(manta_tumor_selected),value=TRUE)) > 0) {
-        selected_manta <- manta_tumor_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>2]  # original is rank_score > 3
+        selected_manta <- manta_tumor_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>manta_threshold]
       } else {
         cat("No VEP annotations, writing out without CSQ\n")
-        selected_manta <- manta_tumor_selected[,-c('ANN','Gene_ID')][rank_score>2]  # original is rank_score > 3
+        selected_manta <- manta_tumor_selected[,-c('ANN','Gene_ID')][rank_score>manta_threshold]
       }
       fwrite(selected_manta,file=manta_tumor_file_name)
       cat(paste("Manta tumor ranks written to",manta_tumor_file_name),"\n")

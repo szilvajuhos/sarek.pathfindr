@@ -1,6 +1,6 @@
 mutect2SelectedView <- function(mutect2_selected) {
   cat('Mutect2')
-  t = mutect2_selected[rank_score > 3]
+  t = mutect2_selected[rank_score > getRankThreshold("mutect2_threshold")]
   if (nrow(t) > 0) {
     t = data.table(
       Sample = t$sample,

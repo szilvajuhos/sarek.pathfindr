@@ -294,7 +294,7 @@ scoreStrelka <- function() {
   setcolorder(x = selection, neworder = c(firstcols, cols[!cols %in% firstcols]))
   strelka_selected <-
     selection[order(cumstart, Allele)][order(rank_score, decreasing = T)]
-  strelka_selected <- strelka_selected[rank_score > 3]
+  strelka_selected <- strelka_selected[rank_score > getRankThreshold("strelka_threshold") ]
   strelka_csv_file_name <- paste0(csv_dir, '/', sample, '_tumor.csv')
   cat("Working dir is ",getwd(),"\n")
   cat("Writing results to ", strelka_csv_file_name, "\n")

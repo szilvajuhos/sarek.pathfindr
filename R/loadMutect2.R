@@ -309,14 +309,11 @@ loadMutect2 <- function(mutect2_file) {
     setcolorder(x = selection,neworder = c(firstcols,cols[!cols %in% firstcols]))
     selection <- selection[order(cumstart,Allele)][order(rank_score,decreasing = T)]
     
-    mutect2_selected <- selection[rank_score>3]
+    PFconfig <- getEnvVariable('PFconfig')
+    mutect2_selected <- selection[rank_score > getRankThreshold("mutect2_threshold")]
     m2fname <- paste0(csv_dir,'/',sample,'_mutect2_tumor.csv')
     fwrite(mutect2_selected,file=m2fname)
     cat("Ranks written to ",m2fname,"\n")
-    
-#    if (write_tables) 
-#      fwrite(mutect2_selected[rank_score>3],file=paste0(csv_dir,'/',sampleData$name,'_mutect2_tumor.csv'))
-#    tableWrapper(mutect2_selected[,-c('cumstart','cumend','DOMAINS')][rank_score>3])
   } else {
     cat("No variants considered for scoring")
   }

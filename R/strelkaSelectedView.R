@@ -1,6 +1,6 @@
 strelkaSelectedView <- function(strelka_selected) {
   cat('Strelka')
-  t = strelka_selected[rank_score > 3]
+  t = strelka_selected[rank_score > getRankThreshold("strelka_threshold")]
   if (nrow(t) > 0) {
     t = data.table(
       Sample = t$sample,

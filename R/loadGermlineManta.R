@@ -353,11 +353,12 @@ loadGermlineManta <- function(manta_files) {
       manta_normal_CSV_name <- paste0(csv_dir, '/', sample, '_manta_normal.csv')
       tic(paste("Writing file ",manta_normal_CSV_name))
       # sometimes we have CSQ (VEP annotation) sometimes we don't
+      manta_threshold <- getRankThreshold("manta_threshold")
       if(length(grep('CSQ',colnames(manta_normal_selected),value=TRUE)) > 0) {
-        selected_manta <- manta_normal_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>2]  # original is rank_score > 3
+        selected_manta <- manta_normal_selected[,-c('ANN','CSQ','Gene_ID')][rank_score>manta_threshold]
       } else {
         cat("No VEP annotations, writing out without CSQ\n")
-        selected_manta <- manta_normal_selected[,-c('ANN','Gene_ID')][rank_score>2]  # original is rank_score > 3
+        selected_manta <- manta_normal_selected[,-c('ANN','Gene_ID')][rank_score>manta_threshold]
       }
       fwrite(selected_manta,file = manta_normal_CSV_name)
       toc()

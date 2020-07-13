@@ -24,11 +24,15 @@ default:
 
   # score thresholds are always calculated as "greater than" (>), so 
   # value 3 will _not_ be presented, only 4,5,...
-
+  #
+  # default threshold can be overwritten by specific values. On the other hand, 
+  # it is recommended to add at least a default value, or the scoring function 
+  # will fail to export lines (defaul will be NULL)
+  # 
   default_threshold: 3
-  mutect2_threshold: 3
-  strelka_threshold: 3
-  haplotypecaller_threshold: 3
-  manta_threshold: 3
-  ascat_threshold: 3
-  freec_threshold: 3
+  #  mutect2_threshold: 3
+  #  strelka_threshold: 3
+  #  haplotypecaller_threshold: 3
+  #  manta_threshold: 3
+  #  ascat_threshold: 3
+  #  freec_threshold: 3
